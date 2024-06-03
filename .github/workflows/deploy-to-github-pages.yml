@@ -18,8 +18,12 @@ jobs:
       run: npm ci
     - name: Build
       run: npm run build
+    - name: Make sure to not run Jekyll
+      run: touch dist/.nojekyll
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
+      with:
+        path: 'dist'
 
   deploy:
     runs-on: ubuntu-latest
