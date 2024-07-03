@@ -46,6 +46,11 @@ toc: false
 
 <div class="hero">
   <h1>Observable Framework POC</h1>
+
+  ```js
+  display(balanaces);
+  ```
+
   <h2>Welcome to your new project! Edit&nbsp;<code style="font-size: 90%;">src/index.md</code> to change this page.</h2>
   <a href="https://observablehq.com/framework/getting-started">Get started<span style="display: inline-block; margin-left: 0.25rem;">↗︎</span></a>
 </div>
@@ -82,6 +87,7 @@ toc: false
 ```js
 const aapl = FileAttachment("aapl.csv").csv({typed: true});
 const penguins = FileAttachment("penguins.csv").csv({typed: true});
+const balanaces = FileAttachment("./data/balances.json").json({typed: true});
 ```
 
 ---
