@@ -13,18 +13,27 @@ const balanaces = FileAttachment("./data/balances.json").json({typed: true});;
 <div class="govuk-width-container">
 
 ```js
-
-Plot.plot({
-  inset: 8,
-  grid: true,
-  color: {
-    legend: true,
-  },
-  marks: [
-    Plot.dot(balanaces, {x: "days", y: "fill_rate"})
-  ]
-})
+function balancesChart(data, {width}) {
+  return Plot.plot({
+    title: "Fill rate over time",
+    width,
+    inset: 8,
+    grid: true,
+    color: {
+      legend: true,
+    },
+    marks: [
+      Plot.dot(data, {x: "days", y: "fill_rate"})
+    ]
+  })
+}
 ```
+
+<div class="grid grid-cols-1">
+  <div class="card">
+    ${resize((width) => balancesChart(balanaces, {width}))}
+  </div>
+</div>
 
 # Rocket launches 🚀
 
