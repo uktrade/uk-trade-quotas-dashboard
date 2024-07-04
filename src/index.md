@@ -2,6 +2,7 @@
 theme: dashboard
 title: Quota balances
 toc: false
+style: style.css
 ---
 
 ```js

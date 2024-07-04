@@ -5,8 +5,13 @@
     max-width: none;
 }
 
+:root {
+  --theme-foreground-focus: green;
+  margin:0px !important
+}
+
 #observablehq-center {
-    margin-top: 0;
+    margin:0px !important;
 }
 
 #observablehq-footer {
