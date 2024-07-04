@@ -44,11 +44,4 @@ data = [
     for row in get_balances(version_id, quota_order_number='050097')
 ]
 
-def days_since_2021(dateString):
-    dateSlices = dateString.split('-')
-    return ( ((int(dateSlices[0])-2021)*365)+((int(dateSlices[1])-0)*31)+int(dateSlices[2])-0 )
-
-outs = []
-for row in data:
-    outs.append({'fill_rate':row['quota_definition__fill_rate'], 'days':days_since_2021(row['quota_definition__last_allocation_date'])})
-sys.stdout.buffer.write(json.dumps(outs).encode('utf-8'))
+sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))

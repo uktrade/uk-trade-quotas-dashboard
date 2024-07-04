@@ -7,7 +7,10 @@ style: style.css
 
 
 ```js
-const balanaces = FileAttachment("./data/balances.json").json({typed: true});;
+const balances = FileAttachment("./data/balances.json").json({typed: true}).then(data => data.map(row => ({
+  'date': Date.parse(row.quota_definition__last_allocation_date),
+  'fill_rate': row.quota_definition__fill_rate,
+})));
 ```
 
 <div class="govuk-width-container">
@@ -17,13 +20,12 @@ function balancesChart(data, {width}) {
   return Plot.plot({
     title: "Fill rate over time",
     width,
-    inset: 8,
-    grid: true,
-    color: {
-      legend: true,
-    },
+    x: {type: "utc"},
+    y: {domain: [0, 1.0]},
     marks: [
-      Plot.dot(data, {x: "days", y: "fill_rate"})
+      Plot.gridX(),
+      Plot.gridY(),
+      Plot.dot(data, {x: "date", y: "fill_rate"})
     ]
   })
 }
@@ -33,7 +35,7 @@ function balancesChart(data, {width}) {
 
 <div class="grid grid-cols-1">
   <div class="card">
-    ${resize((width) => balancesChart(balanaces, {width}))}
+    ${resize((width) => balancesChart(balances, {width}))}
   </div>
 </div>
 
