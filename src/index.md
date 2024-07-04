@@ -29,13 +29,15 @@ function balancesChart(data, {width}) {
 }
 ```
 
+<h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
+
 <div class="grid grid-cols-1">
   <div class="card">
     ${resize((width) => balancesChart(balanaces, {width}))}
   </div>
 </div>
 
-# Rocket launches 🚀
+<h1 class="govuk-heading-l govuk-!-margin-top-7">Rocket launches 🚀</h1>
 
 <!-- Load and transform the data -->
 
