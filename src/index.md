@@ -13,6 +13,20 @@ display(balanaces);
 const balanaces = FileAttachment("./data/balances.json").json({typed: true});;
 ```
 
+```js
+
+Plot.plot({
+  inset: 8,
+  grid: true,
+  color: {
+    legend: true,
+  },
+  marks: [
+    Plot.dot(balanaces, {x: "days", y: "fill_rate"})
+  ]
+})
+```
+
 # Rocket launches 🚀
 
 <!-- Load and transform the data -->
