@@ -42,6 +42,19 @@ export default {
   <div class="govuk-width-container">
     <div class="govuk-footer__meta">
       <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+        <h2 class="govuk-visually-hidden">Support links</h2>
+        <ul class="govuk-footer__inline-list">
+            <li class="govuk-footer__inline-list-item">
+              <a class="govuk-footer__link" href="https://github.com/uktrade/quota-balances-dashboard">
+                GitHub repository for this data dashboard, "UK trade quota balances"
+              </a>
+            </li>
+            <li class="govuk-footer__inline-list-item">
+              <a class="govuk-footer__link" href="https://www.gov.uk/government/organisations/department-for-business-and-trade">
+                Created by the Department for Business and Trade (DBT)
+              </a>
+            </li>
+        </ul>
         <svg
           aria-hidden="true"
           focusable="false"
