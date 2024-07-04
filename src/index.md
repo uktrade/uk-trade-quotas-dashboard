@@ -5,13 +5,12 @@ toc: false
 style: style.css
 ---
 
-```js
-display(balanaces);
-```
 
 ```js
 const balanaces = FileAttachment("./data/balances.json").json({typed: true});;
 ```
+
+<div class="govuk-width-container">
 
 ```js
 
@@ -120,3 +119,6 @@ function vehicleChart(data, {width}) {
 </div>
 
 Data: Jonathan C. McDowell, [General Catalog of Artificial Space Objects](https://planet4589.org/space/gcat)
+
+<!-- Closes .govuk-width-container -->
+</div>
