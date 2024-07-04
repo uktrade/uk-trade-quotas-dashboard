@@ -29,6 +29,7 @@ def get_balances(version_id, quota_order_number):
                     S3Object[*].quotas[*] q
                 WHERE
                     q.quota__order_number = '{quota_order_number}'
+                    AND q.quota_definition__last_allocation_date IS NOT NULL
             ''',
         },
     )
@@ -38,6 +39,6 @@ def get_balances(version_id, quota_order_number):
 data = [
     row
     for version_id in get_version_ids()
-    for row in get_balances(version_id, quota_order_number='050006')
+    for row in get_balances(version_id, quota_order_number='050097')
 ]
 sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))
