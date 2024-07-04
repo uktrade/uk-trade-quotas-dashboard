@@ -38,10 +38,13 @@ def get_balances(version_id, quota_order_number):
     r.raise_for_status()
     return r.json()['rows']
 
-data = [
+def remove_duplicates(l):
+    return [dict(t) for t in {tuple(d.items()) for d in l}]
+
+data = remove_duplicates(
     row
     for version_id in get_version_ids()
     for row in get_balances(version_id, quota_order_number='050097')
-]
+)
 
-sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))
+sys.stdout.buffer.write(json.dumps(list(data)).encode('utf-8'))
