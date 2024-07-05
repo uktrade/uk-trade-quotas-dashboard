@@ -9,7 +9,7 @@ style: style.css
 ```js
 const balances = FileAttachment("./data/balances.json").json({typed: true}).then(data => data.map(row => ({
   'date': Date.parse(row.quota_definition__last_allocation_date),
-  'fill_rate': row.quota_definition__fill_rate,
+  'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
 })));
 ```
 
@@ -27,12 +27,13 @@ function balancesChart(data, {width}) {
     title: "Fill rate over time",
     width,
     x: {type: "utc"},
-    y: {domain: [0, 1.0]},
+    y: {domain: [0, 100]},
     color: {range:govuk_colour_palette},
     marks: [
       Plot.gridX(),
       Plot.gridY(),
-      Plot.dot(data, {x: "date", y: "fill_rate"})
+      Plot.dot(data, {x: "date", y: "percentage_remaining"}),
+      Plot.line(data, {x: "date", y: "percentage_remaining"})
     ]
   })
 }
@@ -41,9 +42,9 @@ function balancesLineChart(data, {width}) {
     title: "Fill rate over time",
     width,
     x: {type: "utc"},
-    y: {domain: [0, 1.0]},
+    y: {domain: [0, 100]},
     marks: [Plot.gridX(),
-      Plot.gridY(),Plot.line(data, {x: "date", y: "fill_rate"})]
+      Plot.gridY(),]
   })
 }
 
@@ -57,11 +58,6 @@ function balancesLineChart(data, {width}) {
   </div>
 </div>
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    ${resize((width) => balancesLineChart(sorted, {width}))}
-  </div>
-</div>
 
 <h1 class="govuk-heading-l govuk-!-margin-top-7">Rocket launches 🚀</h1>
 
