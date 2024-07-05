@@ -7,33 +7,48 @@ style: style.css
 
 
 ```js
-const balances = FileAttachment("./data/balances.json").json({typed: true}).then(data => data.map(row => ({
-  'date': Date.parse(row.quota_definition__last_allocation_date),
-  'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
-})));
-```
+const balances = await FileAttachment("./data/balances.json").json({typed: true})
 
+let tableData = []
+for (let balanceSet in balances){
+    tableData.push(balances[balanceSet].map((row) => {
+      return {
+        'id':row.quota__order_number,
+        'date': Date.parse(row.quota_definition__last_allocation_date),
+        'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
+      }
+    }))
+}
+```
 <div class="govuk-width-container">
 
 ```js
 let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"] // Ideally use only the first 4, and in the order they appear 
 
-let sorted = balances.sort(function(a,b) {
+let sortedBalances=[]
+for (let i=0;i < tableData.length;i++){
+  sortedBalances.push(tableData[i].toSorted(function(a,b) {
     return b['date'] - a['date']
-});
-
+}));
+}
 function balancesChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
     width,
     x: {type: "utc"},
     y: {domain: [0, 100]},
-    color: {range:govuk_colour_palette},
+    color: {range:govuk_colour_palette,legend: true},
     marks: [
       Plot.gridX(),
       Plot.gridY(),
-      Plot.dot(data, {x: "date", y: "percentage_remaining"}),
-      Plot.line(data, {x: "date", y: "percentage_remaining"})
+      Plot.dot(data[0], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
+      //Plot.line(data[0], {x: "date", y: "percentage_remaining",stroke: "id"}),
+      Plot.dot(data[1], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
+      //Plot.line(data[1], {x: "date", y: "percentage_remaining",stroke: "id"}),
+      Plot.dot(data[2], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
+      //Plot.line(data[2], {x: "date", y: "percentage_remaining",stroke: "id"}),
+      Plot.dot(data[3], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
+      //Plot.line(data[3], {x: "date", y: "percentage_remaining",stroke: "id"}),
     ]
   })
 }
@@ -45,7 +60,7 @@ function balancesChart(data, {width}) {
 
 <div class="grid grid-cols-1">
   <div class="card">
-    ${resize((width) => balancesChart(sorted, {width}))}
+    ${resize((width) => balancesChart(sortedBalances, {width}))}
   </div>
 </div>
 
