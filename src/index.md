@@ -24,7 +24,7 @@ let sorted = balances.sort(function(a,b) {
 
 function balancesChart(data, {width}) {
   return Plot.plot({
-    title: "Fill rate over time",
+    title: "Percentage of quota remaining over time",
     width,
     x: {type: "utc"},
     y: {domain: [0, 100]},
@@ -37,16 +37,7 @@ function balancesChart(data, {width}) {
     ]
   })
 }
-function balancesLineChart(data, {width}) {
-  return Plot.plot({
-    title: "Fill rate over time",
-    width,
-    x: {type: "utc"},
-    y: {domain: [0, 100]},
-    marks: [Plot.gridX(),
-      Plot.gridY(),]
-  })
-}
+
 
 ```
 
