@@ -36,7 +36,16 @@ export default {
       </a>
     </div>
   </div>
-</div>`,
+</div><div class="govuk-width-container"><div class="govuk-phase-banner">
+<p class="govuk-phase-banner__content" style="max-width: none">
+  <strong class="govuk-tag govuk-phase-banner__content__tag">
+    Prototype
+  </strong>
+  <span class="govuk-phase-banner__text">
+    This is a prototype for testing purposes only. Help us improve it and <a class="govuk-link" href="https://github.com/uktrade/uk-trade-quotas-dashboard/discussions">give your feedback on GitHub discussions</a>.
+  </span>
+</p>
+</div></div>`,
   footer: `
 <div class="govuk-footer">
   <div class="govuk-width-container">
@@ -45,7 +54,7 @@ export default {
         <h2 class="govuk-visually-hidden">Support links</h2>
         <ul class="govuk-footer__inline-list">
             <li class="govuk-footer__inline-list-item">
-              <a class="govuk-footer__link" href="https://github.com/uktrade/quota-balances-dashboard">
+              <a class="govuk-footer__link" href="https://github.com/uktrade/uk-trade-quotas-dashboard">
                 GitHub repository for this data dashboard, "UK trade quotas dashboard"
               </a>
             </li>
