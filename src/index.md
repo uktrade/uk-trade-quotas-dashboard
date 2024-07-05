@@ -52,11 +52,30 @@ function balancesChart(data, {width}) {
     ]
   })
 }
-
-
 ```
 
 <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
+
+<!-- Cards with big numbers -->
+
+<div class="grid grid-cols-4">
+  <div class="card">
+    <h2>Open 🟩</h2>
+    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Open").length.toLocaleString("en-GB")}</span>
+  </div>
+  <div class="card">
+    <h2>Critical 🟨</h2>
+    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Critical").length.toLocaleString("en-GB")}</span>
+  </div>
+  <div class="card">
+    <h2>Closed 🟦</h2>
+    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Closed").length.toLocaleString("en-GB")}</span>
+  </div>
+  <div class="card">
+    <h2>Exhausted 🟥</h2>
+    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
+  </div>
+</div>
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -66,7 +85,8 @@ function balancesChart(data, {width}) {
 
 
 ```js
-const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)))
+const currentOpenCriticalVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
+const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true});
 ```
 
 ```js
@@ -93,7 +113,7 @@ function remainingChart(data, {width}) {
 
 <div class="grid grid-cols-1">
   <div class="card">
-    ${resize((width) => remainingChart(currentVolumes, {width}))}
+    ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
   </div>
 </div>
 
