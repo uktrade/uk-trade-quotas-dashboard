@@ -57,7 +57,8 @@ const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.c
 ```js
 function remainingChart(data, {width}) {
   return Plot.plot({
-    title: "Geographical areas with highest total percentage of remaining open and critical quotas",
+    title: "Areas with highest percentage of unused quotas",
+    subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas",
     width,
     x: {grid: true, label: "Percentage remaining"},
     y: {label: null},
@@ -66,7 +67,7 @@ function remainingChart(data, {width}) {
         {x: (values, b) => {
           return Math.max(0, 1 - values.map(row => row.quota_definition__balance).reduce((partialSum, a) => partialSum + a, 0) / values.map(row => row.quota_definition__initial_volume).reduce((partialSum, a) => partialSum + a, 0))
         }},
-        {y: "quota__geographical_areas", tip: true, sort: {y: "-x"}, fill: govuk_colour_palette[0]}
+        {y: "quota__geographical_areas", tip: true, sort: {y: "-x", limit: 20}, fill: govuk_colour_palette[0]}
       )),
       Plot.ruleX([0]),
       Plot.axisY({label: null, marginLeft: 620}),
