@@ -1,4 +1,4 @@
-# Quota balances dashboard
+# UK trade quotas dashboard
 
 > [!IMPORTANT]  
 > This is a work in progress
