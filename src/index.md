@@ -117,7 +117,11 @@ function remainingChart(data, {width}) {
   </div>
 </div>
 
-<p class="govuk-body-s">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a></p>
+```js
+const generated = await FileAttachment("./data/generated.csv").csv({typed: true})
+```
+
+<p class="govuk-body-s" style="max-width: none">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a> as of ${(new Date(generated[0].generated * 1000)).toLocaleString('en-GB', {dateStyle: 'full', timeStyle: 'long'})}</p>
 
 <!-- Closes .govuk-width-container -->
 </div>
