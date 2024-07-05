@@ -50,6 +50,38 @@ function balancesChart(data, {width}) {
 </div>
 
 
+```js
+const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)))
+```
+
+```js
+function remainingChart(data, {width}) {
+  return Plot.plot({
+    title: "Geographical areas with highest total percentage of remaining open and critical quotas",
+    width,
+    x: {grid: true, label: "Percentage remaining"},
+    y: {label: null},
+    marks: [
+      Plot.rectX(data, Plot.groupY(
+        {x: (values, b) => {
+          return Math.max(0, 1 - values.map(row => row.quota_definition__balance).reduce((partialSum, a) => partialSum + a, 0) / values.map(row => row.quota_definition__initial_volume).reduce((partialSum, a) => partialSum + a, 0))
+        }},
+        {y: "quota__geographical_areas", tip: true, sort: {y: "-x"}, fill: govuk_colour_palette[0]}
+      )),
+      Plot.ruleX([0]),
+      Plot.axisY({label: null, marginLeft: 620}),
+    ]
+  });
+}
+```
+
+<div class="grid grid-cols-1">
+  <div class="card">
+    ${resize((width) => remainingChart(currentVolumes, {width}))}
+  </div>
+</div>
+
+
 <h1 class="govuk-heading-l govuk-!-margin-top-7">Rocket launches 🚀</h1>
 
 <!-- Load and transform the data -->
