@@ -60,12 +60,12 @@ function remainingChart(data, {width}) {
     title: "Areas with highest percentage of unused quotas",
     subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas",
     width,
-    x: {grid: true, label: "Percentage remaining"},
+    x: {grid: true, label: "Percentage remaining", domain: [0, 100]},
     y: {label: null},
     marks: [
       Plot.rectX(data, Plot.groupY(
         {x: (values, b) => {
-          return Math.max(0, 1 - values.map(row => row.quota_definition__balance).reduce((partialSum, a) => partialSum + a, 0) / values.map(row => row.quota_definition__initial_volume).reduce((partialSum, a) => partialSum + a, 0))
+          return Math.max(0, 1 - values.map(row => row.quota_definition__balance).reduce((partialSum, a) => partialSum + a, 0) / values.map(row => row.quota_definition__initial_volume).reduce((partialSum, a) => partialSum + a, 0)) * 100
         }},
         {y: "quota__geographical_areas", tip: true, sort: {y: "-x", limit: 20}, fill: govuk_colour_palette[0]}
       )),
