@@ -16,12 +16,19 @@ const balances = FileAttachment("./data/balances.json").json({typed: true}).then
 <div class="govuk-width-container">
 
 ```js
+let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"] // Ideally use only the first 4, and in the order they appear 
+
+let sorted = balances.sort(function(a,b) {
+    return b['date'] - a['date']
+});
+
 function balancesChart(data, {width}) {
   return Plot.plot({
     title: "Fill rate over time",
     width,
     x: {type: "utc"},
     y: {domain: [0, 1.0]},
+    color: {range:govuk_colour_palette},
     marks: [
       Plot.gridX(),
       Plot.gridY(),
@@ -29,13 +36,30 @@ function balancesChart(data, {width}) {
     ]
   })
 }
+function balancesLineChart(data, {width}) {
+  return Plot.plot({
+    title: "Fill rate over time",
+    width,
+    x: {type: "utc"},
+    y: {domain: [0, 1.0]},
+    marks: [Plot.gridX(),
+      Plot.gridY(),Plot.line(data, {x: "date", y: "fill_rate"})]
+  })
+}
+
 ```
 
 <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
 
 <div class="grid grid-cols-1">
   <div class="card">
-    ${resize((width) => balancesChart(balances, {width}))}
+    ${resize((width) => balancesChart(sorted, {width}))}
+  </div>
+</div>
+
+<div class="grid grid-cols-1">
+  <div class="card">
+    ${resize((width) => balancesLineChart(sorted, {width}))}
   </div>
 </div>
 
@@ -89,7 +113,7 @@ function launchTimeline(data, {width} = {}) {
     width,
     height: 300,
     y: {grid: true, label: "Launches"},
-    color: {...color, legend: true},
+    color: {range:govuk_colour_palette, legend: true},
     marks: [
       Plot.rectY(data, Plot.binX({y: "count"}, {x: "date", fill: "state", interval: "year", tip: true})),
       Plot.ruleY([0])
@@ -116,7 +140,7 @@ function vehicleChart(data, {width}) {
     marginLeft: 50,
     x: {grid: true, label: "Launches"},
     y: {label: null},
-    color: {...color, legend: true},
+    color: {range:govuk_colour_palette, legend: true},
     marks: [
       Plot.rectX(data, Plot.groupY({x: "count"}, {y: "family", fill: "state", tip: true, sort: {y: "-x"}})),
       Plot.ruleX([0])
