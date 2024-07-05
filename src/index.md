@@ -97,8 +97,5 @@ function remainingChart(data, {width}) {
   </div>
 </div>
 
-
-Data: Jonathan C. McDowell, [General Catalog of Artificial Space Objects](https://planet4589.org/space/gcat)
-
 <!-- Closes .govuk-width-container -->
 </div>
