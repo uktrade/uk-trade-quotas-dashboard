@@ -60,19 +60,19 @@ function balancesChart(data, {width}) {
 
 <div class="grid grid-cols-4">
   <div class="card">
-    <h2>Open 🟩</h2>
+    <h2>Open quotas 🟩</h2>
     <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Open").length.toLocaleString("en-GB")}</span>
   </div>
   <div class="card">
-    <h2>Critical 🟨</h2>
+    <h2>Critical quotas 🟨</h2>
     <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Critical").length.toLocaleString("en-GB")}</span>
   </div>
   <div class="card">
-    <h2>Closed 🟦</h2>
+    <h2>Closed quotas 🟦</h2>
     <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Closed").length.toLocaleString("en-GB")}</span>
   </div>
   <div class="card">
-    <h2>Exhausted 🟥</h2>
+    <h2>Exhausted quotas 🟥</h2>
     <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
   </div>
 </div>
