@@ -38,7 +38,7 @@ function balancesChart(data, {width}) {
     x: {type: "utc"},
     y: {domain: [0, 100]},
     color: {range:govuk_colour_palette,legend: true},
-    marks: [
+    marks: [ // add a conditional a la: if (document.querySelector('input[type=checkbox]').checked)
       Plot.gridX(),
       Plot.gridY(),
       Plot.dot(data[0], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
@@ -58,12 +58,52 @@ function balancesChart(data, {width}) {
 
 <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    ${resize((width) => balancesChart(sortedBalances, {width}))}
-  </div>
+<div class="govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="card">
+          ${resize((width) => balancesChart(sortedBalances, {width}))} 
+          $ <!--TODO REMOVE cash sign added for visibility in html below-->
+        </div> 
+      </div>
+      <div class="govuk-grid-column-one-third">
+          <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h5>
+        Select Quotas to show:
+      </h5>
+    </legend>
+    <div id="waste-hint" class="govuk-hint">
+      Select all that apply.
+    </div>
+    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
+        <label class="govuk-label govuk-checkboxes__label" for="waste">
+          Waste from animal carcasses
+        </label>
+      </div>
+      <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input" id="waste-2" name="waste" type="checkbox" value="mines">
+        <label class="govuk-label govuk-checkboxes__label" for="waste-2">
+          Waste from mines or quarries
+        </label>
+      </div>
+      <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input" id="waste-3" name="waste" type="checkbox" value="farm">
+        <label class="govuk-label govuk-checkboxes__label" for="waste-3">
+          Farm or agricultural waste
+        </label>
+      </div>
+    </div>
+  </fieldset>
+</div>
+      </div>
+    </div>
 </div>
 
+<h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
 
 ```js
 const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)))
