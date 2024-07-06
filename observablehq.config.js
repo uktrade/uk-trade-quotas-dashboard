@@ -26,7 +26,7 @@ export default {
   // The path to the source root.
   root: "src",
 
-  // Some additional configuration options and their defaults:
+  // Some additional configuration options and their defaults:q
   // theme: "default", // try "light", "dark", "slate", etc.
   header: () => `<div class="govuk-header" data-module="govuk-header">
   <div class="govuk-header__container govuk-width-container">
