@@ -1,13 +1,42 @@
 @import url("observablehq:default.css");
 @import url("observablehq:theme-air.css");
 
+/* Remove margins/widths set by Observable (in its place we use GOV.UK markup/CSVV */
 #observablehq-header,
 #observablehq-center,
 #observablehq-footer {
   margin: 0px;
   max-width: none;
 }
-
 p, table, figure, figcaption, h1, h2, h3, h4, h5, h6, .katex-display {
   max-width: none;
+}
+
+/* Restore link styles */
+/* (If changing these, be sure to test keyboard as well as mouse navigation) */
+.govuk-link[href] {
+  text-decoration-skip-ink: none;
+}
+.govuk-link[href]:focus {
+  text-decoration-skip-ink: none;
+}
+.govuk-link[href]:hover {
+  text-decoration-thickness: max(3px, .1875rem, .12em);
+  text-decoration-skip-ink: none;
+}
+.govuk-header__link[href]:focus,
+.govuk-header__link[href]:hover {
+  text-decoration: none;
+}
+.govuk-footer__link[href] {
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, .0625rem);
+}
+.govuk-footer__link[href]:focus {
+  text-decoration-skip-ink: none;
+  text-decoration: none;
+}
+.govuk-footer__link[href]:hover {
+  text-decoration-thickness: max(3px, .1875rem, .12em);
+  text-decoration-skip-ink: none;
 }
