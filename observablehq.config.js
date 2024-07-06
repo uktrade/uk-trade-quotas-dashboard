@@ -37,7 +37,7 @@ export default {
     </div>
   </div>
 </div><div class="govuk-width-container"><div class="govuk-phase-banner">
-<p class="govuk-phase-banner__content" style="max-width: none">
+<p class="govuk-phase-banner__content">
   <strong class="govuk-tag govuk-phase-banner__content__tag">
     Prototype
   </strong>
@@ -48,7 +48,7 @@ export default {
 </div></div>`,
   footer: `
 <div class="govuk-width-container">
-  <p class="govuk-body-s govuk-!-margin-bottom-7" style="max-width: none">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a> as of ${(new Date()).toLocaleString('en-GB', {dateStyle: 'full', timeStyle: 'long',timeZone: 'Europe/London',})}</p>
+  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a> as of ${(new Date()).toLocaleString('en-GB', {dateStyle: 'full', timeStyle: 'long',timeZone: 'Europe/London',})}</p>
 </div>
 <div class="govuk-footer">
   <div class="govuk-width-container">
