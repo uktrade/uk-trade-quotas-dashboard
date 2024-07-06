@@ -1,21 +1,13 @@
 @import url("observablehq:default.css");
 @import url("observablehq:theme-air.css");
 
-#observablehq-header {
-  margin:0px !important;
-  max-width: none;
-}
-
-:root {
-  --theme-foreground-focus: green;
-  margin:0px !important
-}
-
-#observablehq-center {
-    margin:0px !important;
-}
-
+#observablehq-header,
+#observablehq-center,
 #observablehq-footer {
+  margin: 0px;
   max-width: none;
-  margin:0px !important;
+}
+
+p, table, figure, figcaption, h1, h2, h3, h4, h5, h6, .katex-display {
+  max-width: none;
 }
