@@ -47,6 +47,9 @@ export default {
 </p>
 </div></div>`,
   footer: `
+<div class="govuk-width-container">
+  <p class="govuk-body-s" style="max-width: none">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a> as of ${(new Date()).toLocaleString('en-GB', {dateStyle: 'full', timeStyle: 'long',timeZone: 'Europe/London',})}</p>
+</div>
 <div class="govuk-footer">
   <div class="govuk-width-container">
     <div class="govuk-footer__meta">
