@@ -1,6 +1,7 @@
 ---
 theme: dashboard
-title: Quota balances
+# Title is empty since this is a single page site, and the <title> element will contain the site name
+title: 
 toc: false
 style: style.css
 ---
