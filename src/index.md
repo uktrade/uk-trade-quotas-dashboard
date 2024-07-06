@@ -6,8 +6,50 @@ style: style.css
 ---
 
 
+<div class="govuk-width-container">
+  <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
+
+  <div class="grid grid-cols-4">
+    <div class="card">
+      <h2>Open quotas 🟩</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Open").length.toLocaleString("en-GB")}</span>
+    </div>
+    <div class="card">
+      <h2>Critical quotas 🟨</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Critical").length.toLocaleString("en-GB")}</span>
+    </div>
+    <div class="card">
+      <h2>Closed quotas 🟦</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Closed").length.toLocaleString("en-GB")}</span>
+    </div>
+    <div class="card">
+      <h2>Exhausted quotas 🟥</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <div class="card">
+      ${resize((width) => balancesChart(sortedBalances, {width}))}
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1">
+    <div class="card">
+      ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
+    </div>
+  </div>
+
+  <p class="govuk-body-s" style="max-width: none">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a> as of ${(new Date(generated[0].generated * 1000)).toLocaleString('en-GB', {dateStyle: 'full', timeStyle: 'long'})}</p>
+
+<!-- Closes .govuk-width-container -->
+</div>
+
+
 ```js
 const balances = await FileAttachment("./data/balances.json").json({typed: true})
+const currentOpenCriticalVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
+const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true});
 
 let tableData = []
 for (let balanceSet in balances){
@@ -19,17 +61,15 @@ for (let balanceSet in balances){
       }
     }))
 }
-```
-<div class="govuk-width-container">
 
-```js
-let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"] // Ideally use only the first 4, and in the order they appear 
+ // Ideally use only the first 4, and in the order they appear 
+let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"]
 
 let sortedBalances=[]
 for (let i=0;i < tableData.length;i++){
   sortedBalances.push(tableData[i].toSorted(function(a,b) {
-    return b['date'] - a['date']
-}));
+      return b['date'] - a['date']
+  }));
 }
 function balancesChart(data, {width}) {
   return Plot.plot({
@@ -52,44 +92,7 @@ function balancesChart(data, {width}) {
     ]
   })
 }
-```
 
-<h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
-
-<!-- Cards with big numbers -->
-
-<div class="grid grid-cols-4">
-  <div class="card">
-    <h2>Open quotas 🟩</h2>
-    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Open").length.toLocaleString("en-GB")}</span>
-  </div>
-  <div class="card">
-    <h2>Critical quotas 🟨</h2>
-    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Critical").length.toLocaleString("en-GB")}</span>
-  </div>
-  <div class="card">
-    <h2>Closed quotas 🟦</h2>
-    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Closed").length.toLocaleString("en-GB")}</span>
-  </div>
-  <div class="card">
-    <h2>Exhausted quotas 🟥</h2>
-    <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
-  </div>
-</div>
-
-<div class="grid grid-cols-1">
-  <div class="card">
-    ${resize((width) => balancesChart(sortedBalances, {width}))}
-  </div>
-</div>
-
-
-```js
-const currentOpenCriticalVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
-const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true});
-```
-
-```js
 function remainingChart(data, {width}) {
   return Plot.plot({
     title: "Areas with highest percentage of unused quotas",
@@ -109,19 +112,6 @@ function remainingChart(data, {width}) {
     ]
   });
 }
-```
 
-<div class="grid grid-cols-1">
-  <div class="card">
-    ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
-  </div>
-</div>
-
-```js
 const generated = await FileAttachment("./data/generated.csv").csv({typed: true})
 ```
-
-<p class="govuk-body-s" style="max-width: none">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" published on data.gov.uk</a> as of ${(new Date(generated[0].generated * 1000)).toLocaleString('en-GB', {dateStyle: 'full', timeStyle: 'long'})}</p>
-
-<!-- Closes .govuk-width-container -->
-</div>
