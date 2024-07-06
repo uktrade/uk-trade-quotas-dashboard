@@ -1,5 +1,5 @@
 ---
-theme: air
+style: style.css
 # Title is empty since this is a single page site, and the <title> element will contain the site name
 title: 
 toc: false

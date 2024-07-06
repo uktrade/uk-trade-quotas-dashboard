@@ -1,5 +1,20 @@
 @import url("observablehq:default.css");
-@import url("observablehq:theme-air.css");
+
+/* Make the Observable theme a bit move like GOV.UK Design System */
+:root {
+  --theme-foreground: #0b0c0c; /* page foreground color, e.g. black */
+  --theme-background: #ffffff; /* page background color, e.g. white */
+  --theme-background-alt: #f3f2f1; /* block background color, e.g. light gray */
+  --theme-foreground-alt: #0b0c0c; /* heading foreground color, e.g. brown */
+  --theme-foreground-muted: #505a5f; /* secondary text foreground color, e.g. dark gray */
+  --theme-foreground-faint: #b1b4b6; /* faint border color, e.g. middle gray */
+  --theme-foreground-fainter: #b1b4b6; /* fainter border color, e.g. light gray */
+  --theme-foreground-faintest: #b1b4b6; /* faintest border color, e.g. almost white */
+  --theme-foreground-focus: #1d70b8; /* emphasis foreground color, e.g. blue */
+}
+.card {
+  border-radius: 0; /* The design system doesn't tend to have rounded corners */
+}
 
 /* Remove margins/widths set by Observable (in its place we use GOV.UK markup/CSVV */
 #observablehq-header,
