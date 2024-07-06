@@ -40,3 +40,10 @@ p, table, figure, figcaption, h1, h2, h3, h4, h5, h6, .katex-display {
   text-decoration-thickness: max(3px, .1875rem, .12em);
   text-decoration-skip-ink: none;
 }
+
+/* The DBT crest is 5px bigger than the GOV.UK design system expects */
+/* (This still looks reasonable since the Crown at the top and the ship at the bottom
+/* just seem to "peek" over the edge) */
+.dbt-header__logotype {
+  margin-bottom: -5px;
+}
