@@ -33,6 +33,11 @@ Then visit <http://localhost:3000> to preview the bashboard.
 For more information, see <https://observablehq.com/framework/getting-started>.
 
 
+## Deployment
+
+The dashboard is hosted on GitHub pages, and deployed automatically on every push or merge to the main branch, and on a daily schedule. See the <a href="./.github/workflows/deploy-to-github-pages.yml">Deploy to GitHub Pages workflow</a> for details.
+
+
 ## Command reference
 
 | Command           | Description                                              |
