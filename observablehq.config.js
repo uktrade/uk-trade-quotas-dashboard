@@ -19,7 +19,7 @@ export default {
 
   // Content to add to the head of the page, e.g. for a favicon:
   head: `
-    <link rel="stylesheet" href="govuk-frontend-5.4.0.min.css">
+    <link rel="stylesheet" href="npm:govuk-frontend@5.4.0/dist/govuk/govuk-frontend.min.css">
     <link rel="stylesheet" href="style.css">
   `,
 
