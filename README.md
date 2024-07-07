@@ -61,17 +61,13 @@ The steps to make changes are in the [Using source control section of the github
 
 3. Make changes as needed.
 
-4. (Optional) Add any changed files to the git stage to be committed.
+4. Commit and push. The commit message can be brief, but should be accurate.
 
-   If you don't do this, all changed files will be committed.
-
-5. Commit and push. The commit message can be brief, but should be accurate.
-
-6. Make a pull request from your branch. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
+5. Make a pull request from your branch. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
 
 To then preview changes:
 
-7. Wait for a comment to appear in the pull request for your change that contains a link to the preview. Click the link to see the preview.
+6. Wait for a comment to appear in the pull request for your change that contains a link to the preview. Click the link to see the preview.
 
    Note that the comment appears a few moments _before_ the preview is ready. If you click the link very soon after it appears, you may arrive at a 404 error page. If this happens wait a few moments and refresh.
 
@@ -81,7 +77,7 @@ If you need to make changes, you should be able to repeat steps 3-5 above for yo
 
 Then before merging the PR:
 
-8. Make sure the pull request title and description are accurate, and describe what this change does from a end user point of view, why it's being done, and how.
+7. Make sure the pull request title and description are accurate, and describe what this change does from a end user point of view, why it's being done, and how.
 
 
 ## Deployment
