@@ -55,7 +55,12 @@ const balances = await FileAttachment("./data/balances.json")
     percentage_remaining: (1-row.quota_definition__fill_rate)*100,
   })));
 const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv")
-  .csv({typed: true});
+  .csv({typed: true})
+  .then(data => data.map(row => ({
+    ...row,
+    // Shorten the really long geographical area names
+    quota__geographical_areas: row.quota__geographical_areas.replace(/.*(.\[\d+\]).*/, 'Areas subject to $1')
+  })));
 const currentOpenCriticalVolumes = currentVolumes
   .then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
 
@@ -91,7 +96,7 @@ function remainingChart(data, {width}) {
         {y: "quota__geographical_areas", tip: true, sort: {y: "-x", limit: 20}, fill: govuk_colour_palette[0]}
       )),
       Plot.ruleX([0]),
-      Plot.axisY({label: null, marginLeft: 620}),
+      Plot.axisY({label: null, marginLeft: 250}),
     ]
   });
 }
