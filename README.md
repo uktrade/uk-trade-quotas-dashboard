@@ -53,7 +53,7 @@ While the feedback cycle of this process is slow, this process is suitable if yo
 > [!CAUTION]  
 > Previews are just like everything else in this repository: open to the world.
 
-The steps to make changes are in the [Using source control section of the github.dev documentation](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor#using-source-control), but briefly
+The steps to make changes are in the [Using source control section of the github.dev documentation](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor#using-source-control), but briefly:
 
 1. When viewing the repository in your browser, for example the page you're currently reading, press "." (full stop) to start the web-based editor.
 
