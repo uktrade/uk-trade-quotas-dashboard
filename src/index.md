@@ -30,7 +30,7 @@ theme: air
 
   <div class="grid grid-cols-1">
     <div class="card">
-      ${resize((width) => balancesChart(sortedBalances, {width}))}
+      ${resize((width) => balancesChart(balances, {width}))}
     </div>
   </div>
 
@@ -43,32 +43,22 @@ theme: air
 <!-- Closes .govuk-width-container -->
 </div>
 
-
 ```js
-const balances = await FileAttachment("./data/balances.json").json({typed: true})
-const currentOpenCriticalVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true}).then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
-const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv").csv({typed: true});
-
-let tableData = []
-for (let balanceSet in balances){
-    tableData.push(balances[balanceSet].map((row) => {
-      return {
-        'id':row.quota__order_number,
-        'date': Date.parse(row.quota_definition__last_allocation_date),
-        'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
-      }
-    }))
-}
-
  // Ideally use only the first 4, and in the order they appear 
 let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"]
 
-let sortedBalances=[]
-for (let i=0;i < tableData.length;i++){
-  sortedBalances.push(tableData[i].toSorted(function(a,b) {
-      return b['date'] - a['date']
-  }));
-}
+const balances = await FileAttachment("./data/balances.json")
+  .json({typed: true})
+  .then(data => data.map(row => ({
+    quota__order_number: row.quota__order_number,
+    date: Date.parse(row.quota_definition__last_allocation_date),
+    percentage_remaining: (1-row.quota_definition__fill_rate)*100,
+  })));
+const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv")
+  .csv({typed: true});
+const currentOpenCriticalVolumes = currentVolumes
+  .then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
+
 function balancesChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
@@ -76,16 +66,12 @@ function balancesChart(data, {width}) {
     width,
     x: {type: "utc", label: "Date of allocation"},
     y: {domain: [0, 100], label: "Percentage remaining"},
-    color: {range:govuk_colour_palette,legend: true},
+    color: {range:govuk_colour_palette, legend: true},
     marks: [
-      //Plot.gridX(),
       Plot.gridY(),
       Plot.ruleY([0], {stroke: "currentColor"}),
       Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),
-      Plot.dot(data[0], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      Plot.dot(data[1], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      Plot.dot(data[2], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      Plot.dot(data[3], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
+      Plot.dot(data, {x: "date", y: "percentage_remaining", stroke: "quota__order_number", symbol:'asterisk'}),
     ]
   })
 }
