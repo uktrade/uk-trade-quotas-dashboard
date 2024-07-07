@@ -44,17 +44,10 @@ def remove_duplicates(l):
 orderNumbers1 ='''('050097','050096','050120','050212')'''
 orderNumbers = ['050097','050096','050120','050212']
 
-data=(remove_duplicates(
-        row
-        for version_id in get_version_ids()
-        for row in get_balances(version_id, quota_order_numbers=orderNumbers1)
-))
+data = remove_duplicates(
+    row
+    for version_id in get_version_ids()
+    for row in get_balances(version_id, quota_order_numbers=orderNumbers1)
+)
 
-outData={}
-for orderNumber in orderNumbers:
-    outData[orderNumber]=[]
-    for row in data:
-        if row['quota__order_number']==orderNumber:
-            outData[orderNumber].append(row)
-
-sys.stdout.buffer.write(json.dumps(outData).encode('utf-8'))
+sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))
