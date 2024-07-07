@@ -65,7 +65,7 @@ The steps to make changes are in the [Using source control section of the github
 
 5. Commit and push. The commit message can be brief, but should be accurate.
 
-6. Make a pull request. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
+6. Make a pull request from your branch. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
 
 To then preview changes:
 
