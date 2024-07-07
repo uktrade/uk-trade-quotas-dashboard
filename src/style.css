@@ -1,8 +1,9 @@
 /* Make the Observable theme a bit move like GOV.UK Design System */
+/* (Colours taken from either the GOV.UK Design System, or from the GOV.UK Design System site) */
 :root {
   --theme-foreground: #0b0c0c; /* page foreground color, e.g. black */
   --theme-background: #ffffff; /* page background color, e.g. white */
-  --theme-background-alt: #f3f2f1; /* block background color, e.g. light gray */
+  --theme-background-alt: #f8f8f8; /* block background color, e.g. light gray */
   --theme-foreground-alt: #0b0c0c; /* heading foreground color, e.g. brown */
   --theme-foreground-muted: #505a5f; /* secondary text foreground color, e.g. dark gray */
   --theme-foreground-faint: #b1b4b6; /* faint border color, e.g. middle gray */
