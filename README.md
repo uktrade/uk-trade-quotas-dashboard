@@ -7,6 +7,16 @@ The dashboard sources data from the <a class="govuk-link govuk-link--no-visited-
 > [!IMPORTANT]  
 > This is prototype for testing purposes only. It exists to experiment with using the [Observable Framework](https://observablehq.com/framework) to publish dashboards of public data.
 
+---
+
+### Contents
+
+- [Running locally](#running-locally)
+- [Deployment](#deployment)
+- [Command reference](#command-reference)
+- [Project structure](#project-structure)
+
+---
 
 ## Running locally
 
