@@ -65,7 +65,7 @@ The steps to make changes are in the [Using source control section of the github
 
 5. Commit, with a descriptive message, and push.
 
-6. Make a pull request.
+6. Make a pull request. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
 
 To then preview changes:
 
@@ -74,6 +74,12 @@ To then preview changes:
    Note that the comment appears a few moments _before_ the preview is ready. If you click the link very soon after it appears, you may arrive at a 404 error page. If this happens wait a few moments and refresh.
 
    If there is an error when building the preview, the comment will not appear. Errors should be visible in the [log of workflows for the "GitHub pages: deploy preview" action](https://github.com/uktrade/uk-trade-quotas-dashboard/actions/workflows/github-pages-deploy-preview.yml).
+
+If you need to make changes, you should be able to repeat steps 1-5 above for your branch
+
+Then before merging the PR:
+
+8. Make sure the pull request title and description are accurate, and describe what this change does from a end user point of view, why it's being done, and now.
 
 
 ## Deployment
