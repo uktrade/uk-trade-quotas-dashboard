@@ -1,0 +1,30 @@
+name: Deploy PR previews to GitHub pages
+
+concurrency: preview-${{ github.ref }}
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        if: github.event.action != 'closed'
+        run: npm ci
+      - name: Build
+        if: github.event.action != 'closed'
+        run: |
+          npm run build
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          umbrella-dir: preview
+          source-dir: dist
