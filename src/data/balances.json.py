@@ -32,7 +32,7 @@ def get_balances(version_id, quota_order_numbers):
                     S3Object[*].quotas[*] q
                 WHERE
                     q.quota__order_number IN {quota_order_numbers}
-                    AND q.quota_definition__last_allocation_date IS NOT NULL
+                    AND q.quota_definition__last_allocation_date >= '2022-01-01'
             ''',
         },
     )

@@ -72,21 +72,20 @@ for (let i=0;i < tableData.length;i++){
 function balancesChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
+    subtitle: "How the percentage remaining has changed since the start of 2020 for four quotas. Data is available only at inconsistent intervals.",
     width,
-    x: {type: "utc"},
-    y: {domain: [0, 100]},
+    x: {type: "utc", label: "Date of allocation"},
+    y: {domain: [0, 100], label: "Percentage remaining"},
     color: {range:govuk_colour_palette,legend: true},
     marks: [
-      Plot.gridX(),
+      //Plot.gridX(),
       Plot.gridY(),
+      Plot.ruleY([0], {stroke: "currentColor"}),
+      Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),
       Plot.dot(data[0], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[0], {x: "date", y: "percentage_remaining",stroke: "id"}),
       Plot.dot(data[1], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[1], {x: "date", y: "percentage_remaining",stroke: "id"}),
       Plot.dot(data[2], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[2], {x: "date", y: "percentage_remaining",stroke: "id"}),
       Plot.dot(data[3], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[3], {x: "date", y: "percentage_remaining",stroke: "id"}),
     ]
   })
 }
@@ -94,7 +93,7 @@ function balancesChart(data, {width}) {
 function remainingChart(data, {width}) {
   return Plot.plot({
     title: "Areas with highest percentage of unused quotas",
-    subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas",
+    subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas.",
     width,
     x: {grid: true, label: "Percentage remaining", domain: [0, 100]},
     y: {label: null},
