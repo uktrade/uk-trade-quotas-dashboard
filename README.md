@@ -63,7 +63,7 @@ The steps to make changes are in the [Using source control section of the github
 
 4. Add any changed files to the git stage.
 
-5. Commit, with a descriptive message, and push.
+5. Commit and push. The commit message can be brief, but should be accurate.
 
 6. Make a pull request. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
 
