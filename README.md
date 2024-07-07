@@ -77,7 +77,9 @@ To then preview changes:
 
    If there is an error when building the preview, the comment will not appear. Errors should be visible in the [log of workflows for the "GitHub pages: deploy preview" action](https://github.com/uktrade/uk-trade-quotas-dashboard/actions/workflows/github-pages-deploy-preview.yml).
 
-If you need to make changes, you should be able to repeat steps 3-5 above for your branch. Then before merging the PR:
+If you need to make changes, you should be able to repeat steps 3-5 above for your branch, and then wait again for the preview to be updated.
+
+Then before merging the PR:
 
 8. Make sure the pull request title and description are accurate, and describe what this change does from a end user point of view, why it's being done, and how.
 
