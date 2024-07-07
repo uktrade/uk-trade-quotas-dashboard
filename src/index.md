@@ -59,7 +59,7 @@ const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.c
   .then(data => data.map(row => ({
     ...row,
     // Shorten the really long geographical area names
-    quota__geographical_areas: row.quota__geographical_areas.replace(/.*(.\[\d+\]).*/, 'Areas subject to $1')
+    quota__geographical_areas: row.quota__geographical_areas.replace(/.*(.\[\d+\]).*/, 'Areas subject to category $1 safeguards')
   })));
 const currentOpenCriticalVolumes = currentVolumes
   .then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
