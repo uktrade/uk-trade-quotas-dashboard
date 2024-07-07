@@ -57,8 +57,8 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/balances.json", {"name":"./data/balances.json","mimeType":"application/json","path":"./_file/data/balances.47ca2e43.json","lastModified":1720360571696});
-registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.600c0703.csv","lastModified":1720360572576});
+registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.05f81a29.json","lastModified":1720360775520});
+registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.600c0703.csv","lastModified":1720360776332});
 
 define({id: "d429b762", inline: true, inputs: ["currentVolumes","display"], body: async (currentVolumes,display) => {
 display(await(
@@ -84,9 +84,9 @@ currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.
 ))
 }});
 
-define({id: "37544599", inline: true, inputs: ["resize","balancesChart","balances","display"], body: async (resize,balancesChart,balances,display) => {
+define({id: "854d32af", inline: true, inputs: ["resize","balanceHistoryChart","balanceHistory","display"], body: async (resize,balanceHistoryChart,balanceHistory,display) => {
 display(await(
-resize((width) => balancesChart(balances, {width}))
+resize((width) => balanceHistoryChart(balanceHistory, {width}))
 ))
 }});
 
@@ -96,11 +96,11 @@ resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))
 ))
 }});
 
-define({id: "390a52bf", inputs: ["FileAttachment","Plot"], outputs: ["govuk_colour_palette","balances","currentVolumes","currentOpenCriticalVolumes","balancesChart","remainingChart"], body: async (FileAttachment,Plot) => {
+define({id: "512984f8", inputs: ["FileAttachment","Plot"], outputs: ["govuk_colour_palette","balanceHistory","currentVolumes","currentOpenCriticalVolumes","balanceHistoryChart","remainingChart"], body: async (FileAttachment,Plot) => {
  // Ideally use only the first 4, and in the order they appear 
 let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"]
 
-const balances = await FileAttachment("./data/balances.json")
+const balanceHistory = await FileAttachment("./data/quota-balance-history.json")
   .json({typed: true})
   .then(data => data.map(row => ({
     quota__order_number: row.quota__order_number,
@@ -117,7 +117,7 @@ const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.c
 const currentOpenCriticalVolumes = currentVolumes
   .then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
 
-function balancesChart(data, {width}) {
+function balanceHistoryChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2020 for four quotas. Data is available only at inconsistent intervals.",
@@ -159,7 +159,7 @@ function remainingChart(data, {width}) {
     ]
   });
 }
-return {govuk_colour_palette,balances,currentVolumes,currentOpenCriticalVolumes,balancesChart,remainingChart};
+return {govuk_colour_palette,balanceHistory,currentVolumes,currentOpenCriticalVolumes,balanceHistoryChart,remainingChart};
 }});
 
 </script>
@@ -210,7 +210,7 @@ return {govuk_colour_palette,balances,currentVolumes,currentOpenCriticalVolumes,
   </div>
   <div class="grid grid-cols-1">
     <div class="card">
-      <span id="cell-37544599"><span class="observablehq-loading"></span></span>
+      <span id="cell-854d32af"><span class="observablehq-loading"></span></span>
     </div>
   </div>
   <div class="grid grid-cols-1">
@@ -220,12 +220,12 @@ return {govuk_colour_palette,balances,currentVolumes,currentOpenCriticalVolumes,
   </div>
 <!-- Closes .govuk-width-container -->
 </div>
-<div id="cell-390a52bf" class="observablehq observablehq--block"></div>
+<div id="cell-512984f8" class="observablehq observablehq--block"></div>
 </main>
 <footer id="observablehq-footer">
 <div>
 <div class="govuk-width-container">
-  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_blank" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Sunday 7 July 2024 at 14:54:02 BST</p>
+  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_blank" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Sunday 7 July 2024 at 14:57:28 BST</p>
 </div>
 <div class="govuk-footer">
   <div class="govuk-width-container">
