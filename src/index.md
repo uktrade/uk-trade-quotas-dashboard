@@ -30,7 +30,7 @@ theme: air
 
   <div class="grid grid-cols-1">
     <div class="card">
-      ${resize((width) => balancesChart(balances, {width}))}
+      ${resize((width) => balanceHistoryChart(balanceHistory, {width}))}
     </div>
   </div>
 
@@ -47,7 +47,7 @@ theme: air
  // Ideally use only the first 4, and in the order they appear 
 let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"]
 
-const balances = await FileAttachment("./data/balances.json")
+const balanceHistory = await FileAttachment("./data/quota-balance-history.json")
   .json({typed: true})
   .then(data => data.map(row => ({
     quota__order_number: row.quota__order_number,
@@ -64,7 +64,7 @@ const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.c
 const currentOpenCriticalVolumes = currentVolumes
   .then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
 
-function balancesChart(data, {width}) {
+function balanceHistoryChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2020 for four quotas. Data is available only at inconsistent intervals.",
