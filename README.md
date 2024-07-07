@@ -57,7 +57,7 @@ The steps to make changes are in the [Using source control section of the github
 
 1. When viewing the repository in your browser, for example the page you're currently reading, press "." (full stop) to start the web-based editor.
 
-2. Create/switch to an existing branch, for example "feat/change-title". 
+2. Create a new branch, for example "feat/change-title". 
 
 3. Make changes as needed.
 
@@ -75,9 +75,7 @@ To then preview changes:
 
    If there is an error when building the preview, the comment will not appear. Errors should be visible in the [log of workflows for the "GitHub pages: deploy preview" action](https://github.com/uktrade/uk-trade-quotas-dashboard/actions/workflows/github-pages-deploy-preview.yml).
 
-If you need to make changes, you should be able to repeat steps 1-5 above for your branch
-
-Then before merging the PR:
+If you need to make changes, you should be able to repeat steps 3-5 above for your branch. Then before merging the PR:
 
 8. Make sure the pull request title and description are accurate, and describe what this change does from a end user point of view, why it's being done, and now.
 
