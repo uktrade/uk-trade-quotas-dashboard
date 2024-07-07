@@ -82,7 +82,7 @@ Then before merging the PR:
 
 ## Deployment
 
-The dashboard is hosted on GitHub pages, and deployed automatically on every push or merge to the main branch, and on a daily schedule. See the <a href="./.github/workflows/deploy-to-github-pages.yml">Deploy to GitHub Pages workflow</a> for details.
+The dashboard is hosted on GitHub pages, and deployed automatically on every push or merge to the main branch, and on a daily schedule. See the ["GitHub pages: deploy main" workflow](.github/workflows/github-pages-deploy-main.yml) for details.
 
 
 ## Command reference
