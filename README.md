@@ -61,7 +61,9 @@ The steps to make changes are in the [Using source control section of the github
 
 3. Make changes as needed.
 
-4. Add any changed files to the git stage.
+4. (Optional) Add any changed files to the git stage to be committed.
+
+   If you don't do this, all changed files will be committed.
 
 5. Commit and push. The commit message can be brief, but should be accurate.
 
