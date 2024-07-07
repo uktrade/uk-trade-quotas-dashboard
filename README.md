@@ -12,7 +12,7 @@ The dashboard sources data from the <a class="govuk-link govuk-link--no-visited-
 ### Contents
 
 - [Running locally](#running-locally)
-- [Making and previewing changes in GitHub](#making-and-previewing-changes-in-github)
+- [Making and previewing changes without a local dev environment](#making-and-previewing-changes-without-local-dev-environment)
 - [Deployment](#deployment)
 - [Command reference](#command-reference)
 - [Project structure](#project-structure)
@@ -44,7 +44,7 @@ Then visit <http://localhost:3000> to preview the bashboard.
 For more information, see <https://observablehq.com/framework/getting-started>.
 
 
-## Making and previewing changes in GitHub
+## Making and previewing changes without a local dev environment
 
 It's possible to make changes to this dashboard directly in the [github.dev web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor), and to preview changes before changing the [production dashboard](https://uktrade.github.io/uk-trade-quotas-dashboard/). 
 
