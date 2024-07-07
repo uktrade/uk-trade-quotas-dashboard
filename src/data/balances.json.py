@@ -15,6 +15,8 @@ def get_version_ids():
     ]
 
 def get_balances(version_id, quota_order_numbers):
+    quota_order_numbers_sql = ','.join([f"'{order_number}'" for order_number in quota_order_numbers])
+
     r = requests.get(
         f'https://data.api.trade.gov.uk/v1/datasets/uk-trade-quotas/versions/{version_id}/data',
         params={
@@ -31,7 +33,7 @@ def get_balances(version_id, quota_order_numbers):
                 FROM
                     S3Object[*].quotas[*] q
                 WHERE
-                    q.quota__order_number IN {quota_order_numbers}
+                    q.quota__order_number IN ({quota_order_numbers_sql})
                     AND q.quota_definition__last_allocation_date >= '2022-01-01'
             ''',
         },
@@ -41,13 +43,11 @@ def get_balances(version_id, quota_order_numbers):
 
 def remove_duplicates(l):
     return [dict(t) for t in {tuple(d.items()) for d in l}]
-orderNumbers1 ='''('050097','050096','050120','050212')'''
-orderNumbers = ['050097','050096','050120','050212']
 
 data = remove_duplicates(
     row
     for version_id in get_version_ids()
-    for row in get_balances(version_id, quota_order_numbers=orderNumbers1)
+    for row in get_balances(version_id, quota_order_numbers=['050097', '050096', '050120', '050212'])
 )
 
 sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))
