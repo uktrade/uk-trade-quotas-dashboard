@@ -1,4 +1,4 @@
-name: Deploy PR previews to GitHub pages
+name: "GitHub pages: deploy preview"
 
 concurrency: preview-${{ github.ref }}
 
@@ -8,7 +8,6 @@ on:
       - opened
       - reopened
       - synchronize
-      - closed
 
 jobs:
   build:
@@ -17,10 +16,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install dependencies
-        if: github.event.action != 'closed'
         run: npm ci
       - name: Build
-        if: github.event.action != 'closed'
         run: |
           npm run build
       - name: Deploy preview
