@@ -69,7 +69,10 @@ function balancesChart(data, {width}) {
     title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2020 for four quotas. Data is available only at inconsistent intervals.",
     width,
-    x: {type: "utc", label: "Date of allocation"},
+    style: "font-size: 12px;",
+    marginBottom: 40,
+    marginTop: 30,
+    x: {type: "utc", label: "Date of allocation", labelOffset: 40},
     y: {domain: [0, 100], label: "Percentage remaining"},
     color: {range:govuk_colour_palette, legend: true},
     marks: [
@@ -86,7 +89,10 @@ function remainingChart(data, {width}) {
     title: "Areas with highest percentage of unused quotas",
     subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas.",
     width,
-    x: {grid: true, label: "Percentage remaining", domain: [0, 100]},
+    height: 550,
+    style: "font-size: 12px;",
+    marginBottom: 40,
+    x: {grid: true, label: "Percentage remaining", domain: [0, 100], labelOffset: 40},
     y: {label: null},
     marks: [
       Plot.rectX(data, Plot.groupY(
@@ -96,7 +102,7 @@ function remainingChart(data, {width}) {
         {y: "quota__geographical_areas", tip: true, sort: {y: "-x", limit: 20}, fill: govuk_colour_palette[0]}
       )),
       Plot.ruleX([0]),
-      Plot.axisY({label: null, marginLeft: 250}),
+      Plot.axisY({label: null, marginLeft: 300}),
     ]
   });
 }
