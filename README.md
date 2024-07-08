@@ -1,6 +1,6 @@
 # UK trade quotas dashboard
 
-This repository contains the source code for the <a href="https://uktrade.github.io/uk-trade-quotas-dashboard/">UK trade quotas dashboard</a>.
+This repository contains the source code for the <a href="https://uk-trade-quotas.docs.trade.gov.uk/">UK trade quotas dashboard</a>.
 
 The dashboard sources data from the <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" dataset published on data.gov.uk</a>, which in turn sources data from the <a href="https://data.api.trade.gov.uk/">Department for Business and Trade Data API</a>.
 
@@ -46,7 +46,7 @@ For more information, see <https://observablehq.com/framework/getting-started>.
 
 ## Making and previewing changes in the browser
 
-It's possible to make changes to this dashboard directly in the [github.dev web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor), and to preview changes before changing the [production dashboard](https://uktrade.github.io/uk-trade-quotas-dashboard/). 
+It's possible to make changes to this dashboard directly in the [github.dev web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor), and to preview changes before changing the [production dashboard](https://uk-trade-quotas.docs.trade.gov.uk/). 
 
 While the feedback cycle of this process is slow, this process is suitable if you are not able to run this dashboard locally.
 
