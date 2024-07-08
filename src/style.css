@@ -19,3 +19,12 @@
   max-width: none;
   margin:0px !important;
 }
+
+input[type="checkbox"] {
+  z-index: 1;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    background-color: white;
+    cursor: pointer;
+}

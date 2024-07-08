@@ -27,6 +27,7 @@ def get_balances(version_id, quota_order_numbers):
                     q.quota_definition__last_allocation_date,
                     q.quota_definition__sid,
                     q.quota_definition__status,
+                    q.quota_definition__validity_start_date,
                     q.quota__order_number
                 FROM
                     S3Object[*].quotas[*] q
@@ -41,8 +42,8 @@ def get_balances(version_id, quota_order_numbers):
 
 def remove_duplicates(l):
     return [dict(t) for t in {tuple(d.items()) for d in l}]
-orderNumbers1 ='''('050097','050096','050120','050212')'''
-orderNumbers = ['050097','050096','050120','050212']
+orderNumbers1 ='''('050097','050096','050120','050212','050035','050232')'''
+orderNumbers = ['050097','050096','050120','050212','050035','050232']
 
 data=(remove_duplicates(
         row

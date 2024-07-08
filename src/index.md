@@ -16,6 +16,7 @@ for (let balanceSet in balances){
         'id':row.quota__order_number,
         'date': Date.parse(row.quota_definition__last_allocation_date),
         'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
+        'quota_start_date':Date.parse(row.quota_definition__validity_start_date),
       }
     }))
 }
@@ -25,33 +26,28 @@ for (let balanceSet in balances){
 ```js
 let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"] // Ideally use only the first 4, and in the order they appear 
 
-let sortedBalances=[]
+let sortedBalances={}
+
 for (let i=0;i < tableData.length;i++){
-  sortedBalances.push(tableData[i].toSorted(function(a,b) {
+  sortedBalances[tableData[i][0].id]=(tableData[i].toSorted(function(a,b) {
     return b['date'] - a['date']
 }));
 }
-function balancesChart(data, {width}) {
-  return Plot.plot({
-    title: "Percentage of quota remaining over time",
-    width,
-    x: {type: "utc"},
-    y: {domain: [0, 100]},
-    color: {range:govuk_colour_palette,legend: true},
-    marks: [ // add a conditional a la: if (document.querySelector('input[type=checkbox]').checked)
-      Plot.gridX(),
-      Plot.gridY(),
-      Plot.dot(data[0], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[0], {x: "date", y: "percentage_remaining",stroke: "id"}),
-      Plot.dot(data[1], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[1], {x: "date", y: "percentage_remaining",stroke: "id"}),
-      Plot.dot(data[2], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[2], {x: "date", y: "percentage_remaining",stroke: "id"}),
-      Plot.dot(data[3], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
-      //Plot.line(data[3], {x: "date", y: "percentage_remaining",stroke: "id"}),
-    ]
-  })
-}
+
+//let enabledBalances=[]
+//if (document.querySelector('#checkbox_050097').checked){
+ // enabledBalances.push(sortedBalances['050097'])
+ // console.log(enabledBalances)
+//} else {
+//  enabledBalances = enabledBalances.filter(function( obj ) {
+ //   return obj.id !== '050097';
+ //   console.log(enabledBalances)
+//})
+//}
+
+
+
+
 
 
 ```
@@ -67,42 +63,80 @@ function balancesChart(data, {width}) {
         </div> 
       </div>
       <div class="govuk-grid-column-one-third">
-          <div class="govuk-form-group">
-  <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h5>
-        Select Quotas to show:
-      </h5>
-    </legend>
-    <div id="waste-hint" class="govuk-hint">
-      Select all that apply.
-    </div>
-    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+       <div class="card">
+
+
+```js
+
+
+const stringToCodeMap = {
+  "Food preparation (US)":"050096",
+  "Wine (ERGA OMNES)":"050097",
+  "Sausages (ERGA OMNES)":"050120",
+  "Fruits/Nuts (Turkey)":"050212",
+  "Dried vegetables (ERGA OMNES)": "050035",
+  "Pasta (Turkey)": "050232",
+}
+
+let plots = selection.map((string) =>
+  [Plot.dot(sortedBalances[stringToCodeMap[string]], {x: "date", y: "percentage_remaining",stroke: "id", symbol:'asterisk'}),
+ // sortedBalances[quotaCode].map((item) => [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]),
+  Plot.ruleX({length: 500}, {x: sortedBalances[stringToCodeMap[string]][10]['quota_start_date'], strokeOpacity: 0.2})
+]
+) 
+
+const marks = [Plot.gridX(),Plot.gridY()]
+
+function balancesChart(data, {width}) {
+  return Plot.plot({
+    title: "Percentage of quota remaining over time",
+    width,
+    x: {type: "utc"},
+    y: {domain: [0, 100]},
+    color: {range:govuk_colour_palette,legend: true},
+    marks: [ // add a conditional a la: if (document.querySelector('input[type=checkbox]').checked)
+    Plot.gridX(),Plot.gridY(),
+      plots
+    ]
+  })
+}
+
+//viewof colors = Inputs.checkbox(["red", "green", "blue"], {label: "color"})
+```
+
+
+<div class="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+<h2>
+        Which quotas would you like to visualise?
+      </h2>
+
+
+```js
+//const selection = view(Inputs.checkbox(["050096", "050097", "050120","050212","050035","050232"],))
+const selection = view(Inputs.checkbox(["Food preparation (US)", "Wine (ERGA OMNES)", "Sausages (ERGA OMNES)","Fruits/Nuts (Turkey)","Dried vegetables (ERGA OMNES)","Pasta (Turkey)"],))
+```
+
+</div>
+</div>
+
+<div class="govuk-checkboxes" data-module="govuk-checkboxes">
       <div class="govuk-checkboxes__item">
         <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
         <label class="govuk-label govuk-checkboxes__label" for="waste">
-          Waste from animal carcasses
+          Govuk style
         </label>
       </div>
-      <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="waste-2" name="waste" type="checkbox" value="mines">
-        <label class="govuk-label govuk-checkboxes__label" for="waste-2">
-          Waste from mines or quarries
-        </label>
       </div>
-      <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="waste-3" name="waste" type="checkbox" value="farm">
-        <label class="govuk-label govuk-checkboxes__label" for="waste-3">
-          Farm or agricultural waste
-        </label>
-      </div>
-    </div>
-  </fieldset>
-</div>
-      </div>
-    </div>
-</div>
 
+
+
+</div>
+      </div>
+      </div>
+    </div>
+</div>
+<div class="govuk-width-container">
 <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
 
 ```js
