@@ -54,15 +54,15 @@
 <link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/_esm.js">
 
     <link rel="stylesheet" href="./_npm/govuk-frontend@5.4.0/dist/govuk/govuk-frontend.min.css">
-    <link rel="stylesheet" href="./_file/style.a7e616b8.css">
+    <link rel="stylesheet" href="./_file/style.d4f05907.css">
   
 <script type="module">
 
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.98855f20.json","lastModified":1720522179441});
-registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.79489f75.csv","lastModified":1720522180317});
+registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.ed104139.json","lastModified":1720522687973});
+registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.79489f75.csv","lastModified":1720522688809});
 
 define({id: "d429b762", inline: true, inputs: ["currentVolumes","display"], body: async (currentVolumes,display) => {
 display(await(
@@ -131,7 +131,7 @@ let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D
 return {govuk_colour_palette};
 }});
 
-define({id: "b88390fd", inputs: ["FileAttachment","selection","Plot","displayLines","govuk_colour_palette"], outputs: ["balanceHistory","tableData","plots","marks","currentVolumes","currentOpenCriticalVolumes","balanceHistoryChart"], body: async (FileAttachment,selection,Plot,displayLines,govuk_colour_palette) => {
+define({id: "ab6b8221", inputs: ["FileAttachment","selection","Plot","displayLines","govuk_colour_palette"], outputs: ["balanceHistory","tableData","plots","marks","currentVolumes","currentOpenCriticalVolumes","balanceHistoryChart"], body: async (FileAttachment,selection,Plot,displayLines,govuk_colour_palette) => {
 
 
 
@@ -173,7 +173,7 @@ const currentOpenCriticalVolumes = currentVolumes
 function balanceHistoryChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
-    subtitle: "How the percentage remaining has changed since the start of 2020 for four quotas. Data is available only at inconsistent intervals.",
+    subtitle: "How the percentage remaining has changed since the start of 2020 for six quotas. Data is available only at inconsistent intervals.",
     width,
     style: "font-size: 12px;",
     marginBottom: 40,
@@ -273,7 +273,7 @@ return {remainingChart};
         </div> 
       </div>
       <div class="govuk-grid-column-one-third">
-       <div class="card height-505">
+       <div class="card height-526">
 <h2>
         Quotas to visualise:
       </h2>
@@ -302,7 +302,7 @@ return {remainingChart};
 <!-- Closes .govuk-width-container -->
 </div>
 <div id="cell-bf7614b2" class="observablehq observablehq--block"></div>
-<div id="cell-b88390fd" class="observablehq observablehq--block"></div>
+<div id="cell-ab6b8221" class="observablehq observablehq--block"></div>
 </div>
       
       
@@ -314,7 +314,7 @@ return {remainingChart};
 <footer id="observablehq-footer">
 <div>
 <div class="govuk-width-container">
-  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_self" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Tuesday 9 July 2024 at 11:46:56 BST</p>
+  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_self" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Tuesday 9 July 2024 at 11:55:57 BST</p>
 </div>
 <div class="govuk-footer">
   <div class="govuk-width-container">
