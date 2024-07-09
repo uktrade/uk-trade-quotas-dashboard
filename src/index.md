@@ -62,15 +62,6 @@ const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Obj
 const displayLines = view(Inputs.checkbox(['Show dates'],{value:['Show dates']}))
 ```
 
-<div class="govuk-checkboxes" data-module="govuk-checkboxes">
-      <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
-        <label class="govuk-label govuk-checkboxes__label" for="waste">
-          Govuk style
-        </label>
-      </div>
-      </div>
-
 </div>
 </div>
 </div>
