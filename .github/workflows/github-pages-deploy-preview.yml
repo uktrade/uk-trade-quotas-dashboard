@@ -1,0 +1,28 @@
+name: "GitHub pages: deploy preview"
+
+concurrency: preview-${{ github.ref }}
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: |
+          npm run build
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          umbrella-dir: preview
+          source-dir: dist
+          custom-url: uk-trade-quotas.docs.trade.gov.uk
