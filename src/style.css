@@ -15,6 +15,15 @@
   border-radius: 0; /* The design system doesn't tend to have rounded corners */
 }
 
+/* Have a wider site than the GOV.UK default. 1100px is what the GOV.UK Eleventy */
+/* site uses, and the public facing Data Workspace documentation */
+.govuk-width-container {
+  max-width: 1100px
+}
+#observablehq-main, #observablehq-header, #observablehq-footer {
+  max-width: none;
+}
+
 .height-526{
   height:526px;
 }
