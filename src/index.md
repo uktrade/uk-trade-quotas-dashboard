@@ -35,7 +35,7 @@ theme: air
         </div> 
       </div>
       <div class="govuk-grid-column-one-third">
-       <div class="card">
+       <div class="card height-505">
 <h2>
         Which quotas would you like to visualise?
       </h2>
@@ -43,7 +43,17 @@ theme: air
 
 ```js
 //const selection = view(Inputs.checkbox(["050096", "050097", "050120","050212","050035","050232"],))
-const selection = view(Inputs.checkbox(["Food preparation (US)", "Wine (ERGA OMNES)", "Sausages (ERGA OMNES)","Fruits/Nuts (Turkey)","Dried vegetables (ERGA OMNES)","Pasta (Turkey)"],))
+
+const stringToCodeMap = {
+  "Food preparation (US)":"050096",
+  "Wine (ERGA OMNES)":"050097",
+  "Sausages (ERGA OMNES)":"050120",
+  "Fruits/Nuts (Turkey)":"050212",
+  "Dried vegetables (ERGA OMNES)": "050035",
+  "Pasta (Turkey)": "050232",
+}
+
+const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Object.keys(stringToCodeMap)[0]]}))
 ```
 
 
@@ -79,14 +89,7 @@ let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D
 ```js
 
 
-const stringToCodeMap = {
-  "Food preparation (US)":"050096",
-  "Wine (ERGA OMNES)":"050097",
-  "Sausages (ERGA OMNES)":"050120",
-  "Fruits/Nuts (Turkey)":"050212",
-  "Dried vegetables (ERGA OMNES)": "050035",
-  "Pasta (Turkey)": "050232",
-}
+
 
 const balanceHistory = await FileAttachment("./data/quota-balance-history.json").json({typed: true})
 let tableData = []
@@ -97,14 +100,16 @@ for (let balanceSet in balanceHistory){
         'date': Date.parse(row.quota_definition__last_allocation_date),
         'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
         'quota_start_date':Date.parse(row.quota_definition__validity_start_date),
+        'readable_desc':row.readable_desc,
       }
     }))
 }
 
-let plots = selection.map((string, index) =>
-  [Plot.dot(tableData[index], {x: "date", y: "percentage_remaining",stroke: "quota__order_number", symbol:'asterisk'}),
+let plots = selection.map((string, index) => {
+  let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
+  return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
  // sortedBalances[quotaCode].map((item) => [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]),
-  Plot.ruleX({length: 500}, {x: tableData[index][10]['quota_start_date'], strokeOpacity: 0.2})]
+  Plot.ruleX({length: 500}, {x: tableData[chosenIndex][10]['quota_start_date'], strokeOpacity: 0.2})]}
 ) 
 
 const marks =  [Plot.gridY(),Plot.ruleY([0], {stroke: "currentColor"}),

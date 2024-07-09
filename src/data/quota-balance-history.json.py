@@ -52,11 +52,22 @@ data = remove_duplicates(
     for version_id in get_version_ids()
     for row in get_balances(version_id, quota_order_numbers=quota_order_numbers)
 )
+stringToCodeMap = {
+  "Food preparation (US)":"050096",
+  "Wine (ERGA OMNES)":"050097",
+  "Sausages (ERGA OMNES)":"050120",
+  "Fruits/Nuts (Turkey)":"050212",
+  "Dried vegetables (ERGA OMNES)": "050035",
+  "Pasta (Turkey)": "050232",
+}
+codeToStringMap = {v: k for k, v in stringToCodeMap.items()}
 
 outData={}
 for orderNumber in quota_order_numbers:
     outData[orderNumber]=[]
     for row in data:
         if row['quota__order_number']==orderNumber:
+            row['readable_desc']=codeToStringMap[orderNumber]
             outData[orderNumber].append(row)
 sys.stdout.buffer.write(json.dumps(outData).encode('utf-8'))
+

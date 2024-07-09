@@ -15,6 +15,9 @@
   border-radius: 0; /* The design system doesn't tend to have rounded corners */
 }
 
+.height-505{
+  height:505px;
+}
 /* Remove margins/widths set by Observable (in its place we use GOV.UK markup/CSVV */
 #observablehq-header,
 #observablehq-center,
