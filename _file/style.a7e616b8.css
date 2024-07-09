@@ -15,12 +15,27 @@
   border-radius: 0; /* The design system doesn't tend to have rounded corners */
 }
 
+.height-505{
+  height:505px;
+}
 /* Remove margins/widths set by Observable (in its place we use GOV.UK markup/CSVV */
 #observablehq-header,
 #observablehq-center,
 #observablehq-footer {
-  margin: 0px;
   max-width: none;
+  margin:0px !important;
+}
+
+input[type="checkbox"] {
+  z-index: 1;
+    width: 44px;
+    min-width:44px;
+    min-height: 44px;
+    height: 44px;
+    margin: 0;
+    background-color: white;
+    cursor: pointer;
+
 }
 p, table, figure, figcaption, h1, h2, h3, h4, h5, h6, .katex-display {
   max-width: none;
