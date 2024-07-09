@@ -26,18 +26,15 @@ theme: air
     </div>
   </div>
 
- <div class="govuk-width-container">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <div class="card">
-          ${resize((width) => balanceHistoryChart(balanceHistory, {width}))} 
-        </div> 
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="card">
+        ${resize((width) => balanceHistoryChart(balanceHistory, {width}))}
       </div>
-      <div class="govuk-grid-column-one-third">
-       <div class="card height-526">
-<h2>
-        Quotas to visualise:
-      </h2>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <div class="card height-526">
+        <h2>Quotas to visualise:</h2>
 
 
 ```js
