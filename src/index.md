@@ -26,12 +26,40 @@ theme: air
     </div>
   </div>
 
-  <div class="grid grid-cols-1">
-    <div class="card">
-      ${resize((width) => balanceHistoryChart(balanceHistory, {width}))}
-    </div>
-  </div>
+ <div class="govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <div class="card">
+          ${resize((width) => balanceHistoryChart(balanceHistory, {width}))} 
+          $ <!--TODO REMOVE cash sign added for visibility in html below-->
+        </div> 
+      </div>
+      <div class="govuk-grid-column-one-third">
+       <div class="card">
+<h2>
+        Which quotas would you like to visualise?
+      </h2>
 
+
+```js
+//const selection = view(Inputs.checkbox(["050096", "050097", "050120","050212","050035","050232"],))
+const selection = view(Inputs.checkbox(["Food preparation (US)", "Wine (ERGA OMNES)", "Sausages (ERGA OMNES)","Fruits/Nuts (Turkey)","Dried vegetables (ERGA OMNES)","Pasta (Turkey)"],))
+```
+
+
+<div class="govuk-checkboxes" data-module="govuk-checkboxes">
+      <div class="govuk-checkboxes__item">
+        <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
+        <label class="govuk-label govuk-checkboxes__label" for="waste">
+          Govuk style
+        </label>
+      </div>
+      </div>
+
+</div>
+</div>
+</div>
+<h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
   <div class="grid grid-cols-1">
     <div class="card">
       ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
@@ -47,19 +75,6 @@ let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D
 
 ```
 
-<h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances ⚖️</h1>
-
-<div class="govuk-width-container">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <div class="card">
-          ${resize((width) => balancesChart(sortedBalances, {width}))} 
-          $ <!--TODO REMOVE cash sign added for visibility in html below-->
-        </div> 
-      </div>
-      <div class="govuk-grid-column-one-third">
-       <div class="card">
-
 
 ```js
 
@@ -73,23 +88,29 @@ const stringToCodeMap = {
   "Pasta (Turkey)": "050232",
 }
 
-let plots = selection.map((string) =>
-  [Plot.dot(sortedBalances[stringToCodeMap[string]], {x: "date", y: "percentage_remaining",stroke: "quota__order_number", symbol:'asterisk'}),
+const balanceHistory = await FileAttachment("./data/quota-balance-history.json").json({typed: true})
+let tableData = []
+for (let balanceSet in balanceHistory){
+    tableData.push(balanceHistory[balanceSet].map((row) => {
+      return {
+        'quota__order_number':row.quota__order_number,
+        'date': Date.parse(row.quota_definition__last_allocation_date),
+        'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
+        'quota_start_date':Date.parse(row.quota_definition__validity_start_date),
+      }
+    }))
+}
+
+let plots = selection.map((string, index) =>
+  [Plot.dot(tableData[index], {x: "date", y: "percentage_remaining",stroke: "quota__order_number", symbol:'asterisk'}),
  // sortedBalances[quotaCode].map((item) => [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]),
-  Plot.ruleX({length: 500}, {x: sortedBalances[stringToCodeMap[string]][10]['quota_start_date'], strokeOpacity: 0.2})
+  Plot.ruleX({length: 500}, {x: tableData[index][10]['quota_start_date'], strokeOpacity: 0.2})]
 ) 
 
-const marks =  [Plot.ruleY([0], {stroke: "currentColor"}),
+const marks =  [Plot.gridY(),Plot.ruleY([0], {stroke: "currentColor"}),
       Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),]
 
-const balanceHistory = await FileAttachment("./data/quota-balance-history.json")
-  .json({typed: true})
-  .then(data => data.map(row => ({
-    quota__order_number: row.quota__order_number,
-    date: Date.parse(row.quota_definition__last_allocation_date),
-    percentage_remaining: (1-row.quota_definition__fill_rate)*100,
-    'quota_start_date':Date.parse(row.quota_definition__validity_start_date),
-  })));
+
 const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv")
   .csv({typed: true})
   .then(data => data.map(row => ({
@@ -123,29 +144,6 @@ function balanceHistoryChart(data, {width}) {
 ```
 
 
-<div class="govuk-checkboxes">
-      <div class="govuk-checkboxes__item">
-<h2>
-        Which quotas would you like to visualise?
-      </h2>
-
-
-```js
-//const selection = view(Inputs.checkbox(["050096", "050097", "050120","050212","050035","050232"],))
-const selection = view(Inputs.checkbox(["Food preparation (US)", "Wine (ERGA OMNES)", "Sausages (ERGA OMNES)","Fruits/Nuts (Turkey)","Dried vegetables (ERGA OMNES)","Pasta (Turkey)"],))
-```
-
-</div>
-</div>
-
-<div class="govuk-checkboxes" data-module="govuk-checkboxes">
-      <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="waste" name="waste" type="checkbox" value="carcasses">
-        <label class="govuk-label govuk-checkboxes__label" for="waste">
-          Govuk style
-        </label>
-      </div>
-      </div>
 
 
 
@@ -155,7 +153,7 @@ const selection = view(Inputs.checkbox(["Food preparation (US)", "Wine (ERGA OMN
     </div>
 </div>
 <div class="govuk-width-container">
-<h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
+
 
 ```js
 function remainingChart(data, {width}) {

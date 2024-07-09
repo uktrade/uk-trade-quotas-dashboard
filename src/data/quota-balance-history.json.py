@@ -45,10 +45,18 @@ def get_balances(version_id, quota_order_numbers):
 def remove_duplicates(l):
     return [dict(t) for t in {tuple(d.items()) for d in l}]
 
+quota_order_numbers=['050097','050096','050120','050212','050035','050232']
+
 data = remove_duplicates(
     row
     for version_id in get_version_ids()
-    for row in get_balances(version_id, quota_order_numbers=['050097','050096','050120','050212','050035','050232'])
+    for row in get_balances(version_id, quota_order_numbers=quota_order_numbers)
 )
 
-sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))
+outData={}
+for orderNumber in quota_order_numbers:
+    outData[orderNumber]=[]
+    for row in data:
+        if row['quota__order_number']==orderNumber:
+            outData[orderNumber].append(row)
+sys.stdout.buffer.write(json.dumps(outData).encode('utf-8'))
