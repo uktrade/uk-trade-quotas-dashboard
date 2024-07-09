@@ -34,7 +34,7 @@ theme: air
         </div> 
       </div>
       <div class="govuk-grid-column-one-third">
-       <div class="card height-505">
+       <div class="card height-526">
 <h2>
         Quotas to visualise:
       </h2>
@@ -137,7 +137,7 @@ const currentOpenCriticalVolumes = currentVolumes
 function balanceHistoryChart(data, {width}) {
   return Plot.plot({
     title: "Percentage of quota remaining over time",
-    subtitle: "How the percentage remaining has changed since the start of 2020 for four quotas. Data is available only at inconsistent intervals.",
+    subtitle: "How the percentage remaining has changed since the start of 2020 for six quotas. Data is available only at inconsistent intervals.",
     width,
     style: "font-size: 12px;",
     marginBottom: 40,
