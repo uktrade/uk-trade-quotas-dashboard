@@ -53,12 +53,12 @@ data = remove_duplicates(
     for row in get_balances(version_id, quota_order_numbers=quota_order_numbers)
 )
 stringToCodeMap = {
-  "Food preparation (US)":"050096",
-  "Wine (ERGA OMNES)":"050097",
-  "Sausages (ERGA OMNES)":"050120",
-  "Fruits/Nuts (Turkey)":"050212",
-  "Dried vegetables (ERGA OMNES)": "050035",
-  "Pasta (Turkey)": "050232",
+  "050096 Food preparation (US)":"050096",
+  "050097 Wine (ERGA OMNES)":"050097",
+  "050120 Sausages (ERGA OMNES)":"050120",
+  "050212 Fruits/Nuts (Turkey)":"050212",
+  "050035 Dried vegetables (ERGA OMNES)": "050035",
+  "050232 Pasta (Turkey)": "050232",
 }
 codeToStringMap = {v: k for k, v in stringToCodeMap.items()}
 

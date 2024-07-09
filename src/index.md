@@ -37,7 +37,7 @@ theme: air
       <div class="govuk-grid-column-one-third">
        <div class="card height-505">
 <h2>
-        Which quotas would you like to visualise?
+        Quotas to visualise:
       </h2>
 
 
@@ -45,17 +45,26 @@ theme: air
 //const selection = view(Inputs.checkbox(["050096", "050097", "050120","050212","050035","050232"],))
 
 const stringToCodeMap = {
-  "Food preparation (US)":"050096",
-  "Wine (ERGA OMNES)":"050097",
-  "Sausages (ERGA OMNES)":"050120",
-  "Fruits/Nuts (Turkey)":"050212",
-  "Dried vegetables (ERGA OMNES)": "050035",
-  "Pasta (Turkey)": "050232",
+  "050096 Food preparation (US)":"050096",
+  "050097 Wine (ERGA OMNES)":"050097",
+  "050120 Sausages (ERGA OMNES)":"050120",
+  "050212 Fruits/Nuts (Turkey)":"050212",
+  "050035 Dried vegetables (ERGA OMNES)": "050035",
+  "050232 Pasta (Turkey)": "050232",
 }
 
 const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Object.keys(stringToCodeMap)[0]]}))
 ```
+<h2>
+        Display quota renewal dates?
+      </h2>
 
+```js
+//const selection = view(Inputs.checkbox(["050096", "050097", "050120","050212","050035","050232"],))
+
+
+const displayLines = view(Inputs.checkbox(['Show lines'],{value:[]}))
+```
 
 <div class="govuk-checkboxes" data-module="govuk-checkboxes">
       <div class="govuk-checkboxes__item">
@@ -108,8 +117,8 @@ for (let balanceSet in balanceHistory){
 let plots = selection.map((string, index) => {
   let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
   return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
- // sortedBalances[quotaCode].map((item) => [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]),
-  Plot.ruleX({length: 500}, {x: tableData[chosenIndex][10]['quota_start_date'], strokeOpacity: 0.2})]}
+  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLines[0]=='Show lines') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]}
+  //Plot.ruleX({length: 500}, {x: tableData[chosenIndex][10]['quota_start_date'], strokeOpacity: 0.2})]}
 ) 
 
 const marks =  [Plot.gridY(),Plot.ruleY([0], {stroke: "currentColor"}),
