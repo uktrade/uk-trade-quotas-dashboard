@@ -31,7 +31,6 @@ theme: air
       <div class="govuk-grid-column-two-thirds">
         <div class="card">
           ${resize((width) => balanceHistoryChart(balanceHistory, {width}))} 
-          $ <!--TODO REMOVE cash sign added for visibility in html below-->
         </div> 
       </div>
       <div class="govuk-grid-column-one-third">
@@ -117,7 +116,7 @@ for (let balanceSet in balanceHistory){
 let plots = selection.map((string, index) => {
   let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
   return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
-  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLines[0]=='Show lines') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]}
+  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLines[0]=='Show lines') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]} 
   //Plot.ruleX({length: 500}, {x: tableData[chosenIndex][10]['quota_start_date'], strokeOpacity: 0.2})]}
 ) 
 
