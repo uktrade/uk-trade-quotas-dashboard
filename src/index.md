@@ -35,60 +35,7 @@ const quotaSelection = Generators.input(quotaInputs);
 
 const displayLinesInput = Inputs.checkbox(['Show dates'], {value:['Show dates']});
 const displayLinesSelection = Generators.input(displayLinesInput);
-```
 
-<div class="govuk-width-container">
-  <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
-  <div class="grid grid-cols-4">
-    <div class="card">
-      <h2>Open quotas 🟩</h2>
-      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Open").length.toLocaleString("en-GB")}</span>
-    </div>
-    <div class="card">
-      <h2>Critical quotas 🟨</h2>
-      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Critical").length.toLocaleString("en-GB")}</span>
-    </div>
-    <div class="card">
-      <h2>Closed quotas 🟦</h2>
-      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Closed").length.toLocaleString("en-GB")}</span>
-    </div>
-    <div class="card">
-      <h2>Exhausted quotas 🟥</h2>
-      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
-    </div>
-  </div>
-  <!-- -->
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <div class="card">
-        ${resize((width) => balanceHistoryChart(balanceHistory, {width}))}
-      </div>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      <div class="card height-526">
-        <h2 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-2">Quotas to visualise:</h2>
-        ${quotaInputs}
-        <!-- -->
-        <h2 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-2">Display quota renewal dates?</h2>
-        ${displayLinesInput}
-      </div>
-    </div>
-  <!-- -->
-  </div>
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
-      <div class="grid grid-cols-1">
-        <div class="card">
-          ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- Closes .govuk-width-container -->
-</div>
-
-```js
 const balanceHistory = await FileAttachment("./data/quota-balance-history.json").json({typed: true})
 let tableData = []
 for (let balanceSet in balanceHistory){
@@ -102,7 +49,9 @@ for (let balanceSet in balanceHistory){
       }
     }))
 }
+```
 
+```js
 let plots = quotaSelection.map((string, index) => {
   let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
   return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
@@ -163,3 +112,54 @@ function remainingChart(data, {width}) {
   });
 }
 ```
+
+<div class="govuk-width-container">
+  <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
+  <div class="grid grid-cols-4">
+    <div class="card">
+      <h2>Open quotas 🟩</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Open").length.toLocaleString("en-GB")}</span>
+    </div>
+    <div class="card">
+      <h2>Critical quotas 🟨</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Critical").length.toLocaleString("en-GB")}</span>
+    </div>
+    <div class="card">
+      <h2>Closed quotas 🟦</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Closed").length.toLocaleString("en-GB")}</span>
+    </div>
+    <div class="card">
+      <h2>Exhausted quotas 🟥</h2>
+      <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
+    </div>
+  </div>
+  <!-- -->
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <div class="card">
+        ${resize((width) => balanceHistoryChart(balanceHistory, {width}))}
+      </div>
+    </div>
+    <div class="govuk-grid-column-one-third">
+      <div class="card height-526">
+        <h2 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-2">Quotas to visualise:</h2>
+        ${quotaInputs}
+        <!-- -->
+        <h2 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-2">Display quota renewal dates?</h2>
+        ${displayLinesInput}
+      </div>
+    </div>
+  <!-- -->
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
+      <div class="grid grid-cols-1">
+        <div class="card">
+          ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Closes .govuk-width-container -->
+</div>
