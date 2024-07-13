@@ -20,6 +20,7 @@ toc: false
 theme: air
 ---
 
+<!-- Constants -->
 ```js
 const stringToCodeMap = {
   "050096 Food preparation (US)":"050096",
@@ -30,36 +31,23 @@ const stringToCodeMap = {
   "050232 Pasta (Turkey)": "050232",
 };
 const govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"];
-const quotaInputs = Inputs.checkbox(Object.keys(stringToCodeMap), {value: [Object.keys(stringToCodeMap)[5]]});
-const quotaSelection = Generators.input(quotaInputs);
-
-const displayLinesInput = Inputs.checkbox(['Show dates'], {value:['Show dates']});
-const displayLinesSelection = Generators.input(displayLinesInput);
-
-const balanceHistory = await FileAttachment("./data/quota-balance-history.json").json({typed: true})
-let tableData = []
-for (let balanceSet in balanceHistory){
-    tableData.push(balanceHistory[balanceSet].map((row) => {
-      return {
-        'quota__order_number':row.quota__order_number,
-        'date': Date.parse(row.quota_definition__last_allocation_date),
-        'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
-        'quota_start_date':Date.parse(row.quota_definition__validity_start_date),
-        'readable_desc':row.readable_desc,
-      }
-    }))
-}
 ```
 
+<!-- Data -->
 ```js
-let plots = quotaSelection.map((string, index) => {
-  let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
-  return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
-  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLinesSelection[0]=='Show dates') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]} 
-) 
-
-const marks =  [Plot.gridY(),Plot.ruleY([0], {stroke: "currentColor"}),
-      Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),]
+const balanceHistory = await FileAttachment("./data/quota-balance-history.json")
+  .json({typed: true})
+  .then(data => data.map(row => ({
+      'quota__order_number': row.quota__order_number,
+      'date': Date.parse(row.quota_definition__last_allocation_date),
+      'percentage_remaining': (1-row.quota_definition__fill_rate)*100,
+      'quota_start_date': Date.parse(row.quota_definition__validity_start_date),
+      'readable_desc': row.readable_desc,
+  })));
+const separator = '📏';  // Bit of a hack, but it's quite a convenient way to deduplicate
+const startDates = [...new Set(balanceHistory.map(row => row.readable_desc + separator + row.quota_start_date))]
+  .map(row => row.split(separator))
+  .map(([desc, date]) => [desc, new Date(parseInt(date))]);
 
 const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv")
   .csv({typed: true})
@@ -70,8 +58,21 @@ const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.c
   })));
 const currentOpenCriticalVolumes = currentVolumes
   .then(data => data.filter(row => ['Open', 'Critical'].includes(row.quota_definition__status)));
+```
 
+<!-- Input widgets -->
+```js
+const quotaInputs = Inputs.checkbox(Object.keys(stringToCodeMap), {value: [Object.keys(stringToCodeMap)[5]]});
+const quotaSelection = Generators.input(quotaInputs);
+
+const displayLinesInput = Inputs.checkbox(['Show dates'], {value: ['Show dates']});
+const displayLinesSelection = Generators.input(displayLinesInput);
+```
+
+<!-- Charts -->
+```js
 function balanceHistoryChart(data, {width}) {
+  console.log(quotaSelection);
   return Plot.plot({
     title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2020 for six quotas. Data is available only at inconsistent intervals.",
@@ -81,13 +82,23 @@ function balanceHistoryChart(data, {width}) {
     marginTop: 30,
     x: {type: "utc", label: "Date of allocation", labelOffset: 40},
     y: {domain: [0, 100], label: "Percentage remaining"},
-    color: {range:govuk_colour_palette, legend: true},
+    color: quotaSelection.length ? {
+      domain: quotaSelection,
+      range: govuk_colour_palette,
+      legend: true
+    } : null,
     marks: [ 
-    marks,
-      plots,
+      Plot.gridY(),
+      Plot.ruleY([0], {stroke: "currentColor"}),
+      Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),
+      Plot.dot(balanceHistory, {
+        x: "date", y: "percentage_remaining", stroke: "readable_desc", symbol:'asterisk',
+        filter: row => quotaSelection.includes(row['readable_desc']),
+      }),
+      startDates.map(([quota, startDate]) => displayLinesSelection[0] == 'Show dates' && quotaSelection.includes(quota) ? Plot.ruleX({length: 500}, {x:startDate}) : null),
     ]
   })
-}
+};
 
 function remainingChart(data, {width}) {
   return Plot.plot({
@@ -113,6 +124,7 @@ function remainingChart(data, {width}) {
 }
 ```
 
+<!-- HTML combining all the above -->
 <div class="govuk-width-container">
   <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
   <div class="grid grid-cols-4">

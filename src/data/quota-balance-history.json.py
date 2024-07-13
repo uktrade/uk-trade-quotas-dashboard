@@ -45,29 +45,19 @@ def get_balances(version_id, quota_order_numbers):
 def remove_duplicates(l):
     return [dict(t) for t in {tuple(d.items()) for d in l}]
 
-quota_order_numbers=['050097','050096','050120','050212','050035','050232']
+code_to_readable_description = {
+  "050096": "050096 Food preparation (US)",
+  "050097": "050097 Wine (ERGA OMNES)",
+  "050120": "050120 Sausages (ERGA OMNES)",
+  "050212": "050212 Fruits/Nuts (Turkey)",
+  "050035": "050035 Dried vegetables (ERGA OMNES)",
+  "050232": "050232 Pasta (Turkey)",
+}
+quota_order_numbers = tuple(code_to_readable_description.keys())
 
 data = remove_duplicates(
-    row
+    (row | {'readable_desc': code_to_readable_description[row['quota__order_number']]})
     for version_id in get_version_ids()
     for row in get_balances(version_id, quota_order_numbers=quota_order_numbers)
 )
-stringToCodeMap = {
-  "050096 Food preparation (US)":"050096",
-  "050097 Wine (ERGA OMNES)":"050097",
-  "050120 Sausages (ERGA OMNES)":"050120",
-  "050212 Fruits/Nuts (Turkey)":"050212",
-  "050035 Dried vegetables (ERGA OMNES)": "050035",
-  "050232 Pasta (Turkey)": "050232",
-}
-codeToStringMap = {v: k for k, v in stringToCodeMap.items()}
-
-outData={}
-for orderNumber in quota_order_numbers:
-    outData[orderNumber]=[]
-    for row in data:
-        if row['quota__order_number']==orderNumber:
-            row['readable_desc']=codeToStringMap[orderNumber]
-            outData[orderNumber].append(row)
-sys.stdout.buffer.write(json.dumps(outData).encode('utf-8'))
-
+sys.stdout.buffer.write(json.dumps(data).encode('utf-8'))
