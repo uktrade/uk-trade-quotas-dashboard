@@ -23,6 +23,30 @@
 #observablehq-main, #observablehq-header, #observablehq-footer {
   max-width: none;
 }
+@media (min-width: 40.0625em) {
+  .govuk-width-container {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+  @supports (margin: max(calc(0px))) {
+    .govuk-width-container {
+      margin-right: max(30px,calc(15px + env(safe-area-inset-right)));
+      margin-left: max(30px,calc(15px + env(safe-area-inset-left)));
+    }
+  }
+}
+@media (min-width: 1160px) {
+  .govuk-width-container {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @supports (margin: max(calc(0px))) {
+    .govuk-width-container {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+}
 
 .height-526{
   height:526px;
