@@ -54,8 +54,6 @@ const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Obj
 <h2>Display quota renewal dates?</h2>
 
 ```js
-
-
 const displayLines = view(Inputs.checkbox(['Show dates'],{value:['Show dates']}))
 ```
 
