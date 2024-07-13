@@ -4,6 +4,19 @@ title:
 toc: false
 theme: air
 ---
+
+```js
+const stringToCodeMap = {
+  "050096 Food preparation (US)":"050096",
+  "050097 Wine (ERGA OMNES)":"050097",
+  "050120 Sausages (ERGA OMNES)":"050120",
+  "050212 Fruits/Nuts (Turkey)":"050212",
+  "050035 Dried vegetables (ERGA OMNES)": "050035",
+  "050232 Pasta (Turkey)": "050232",
+};
+const govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"];
+```
+
 <div class="govuk-width-container">
   <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
 
@@ -36,18 +49,7 @@ theme: air
       <div class="card height-526">
         <h2>Quotas to visualise:</h2>
 
-
 ```js
-
-const stringToCodeMap = {
-  "050096 Food preparation (US)":"050096",
-  "050097 Wine (ERGA OMNES)":"050097",
-  "050120 Sausages (ERGA OMNES)":"050120",
-  "050212 Fruits/Nuts (Turkey)":"050212",
-  "050035 Dried vegetables (ERGA OMNES)": "050035",
-  "050232 Pasta (Turkey)": "050232",
-}
-
 const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Object.keys(stringToCodeMap)[5]]}))
 ```
 
@@ -71,14 +73,6 @@ const displayLines = view(Inputs.checkbox(['Show dates'],{value:['Show dates']})
 </div>
 
 ```js
-
-let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"]
-
-```
-
-
-```js
-
 const balanceHistory = await FileAttachment("./data/quota-balance-history.json").json({typed: true})
 let tableData = []
 for (let balanceSet in balanceHistory){
@@ -130,13 +124,7 @@ function balanceHistoryChart(data, {width}) {
     ]
   })
 }
-
-
 ```
-
-
-
-
 
 </div>
       </div>
@@ -144,7 +132,6 @@ function balanceHistoryChart(data, {width}) {
     </div>
 </div>
 <div class="govuk-width-container">
-
 
 ```js
 function remainingChart(data, {width}) {
