@@ -1,4 +1,19 @@
 ---
+# Notes to maintainers:
+#
+# 1. It's probably good to read the following before attempting changes:
+#    https://observablehq.com/framework/markdown
+#    https://observablehq.com/framework/javascript
+#    https://observablehq.com/framework/reactivity
+#    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+#
+# 2. We use quite a lot of HTML to leverage the GOV.UK Design System, more than most Observable
+#    Framework examples, which means you probably want to add blank lines for readability. But be
+#    careful! In normal HTML this has no effect, but here it runs the risk of being parsed as
+#    Markdown, and if too intented will be treated as a code block to display.
+#
+#    We have worked around this by using empty HTML comments <-- --> to add in some whitespace.
+
 # Title is empty since this is a single page site, and the <title> element will contain the site name
 title: 
 toc: false
@@ -15,11 +30,15 @@ const stringToCodeMap = {
   "050232 Pasta (Turkey)": "050232",
 };
 const govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"];
+const quotaInputs = Inputs.checkbox(Object.keys(stringToCodeMap), {value: [Object.keys(stringToCodeMap)[5]]});
+const quotaSelection = Generators.input(quotaInputs);
+
+const displayLinesInput = Inputs.checkbox(['Show dates'], {value:['Show dates']});
+const displayLinesSelection = Generators.input(displayLinesInput);
 ```
 
 <div class="govuk-width-container">
   <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
-
   <div class="grid grid-cols-4">
     <div class="card">
       <h2>Open quotas 🟩</h2>
@@ -38,7 +57,7 @@ const govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D
       <span class="big">${currentVolumes.filter((d) => d.quota_definition__status === "Exhausted").length.toLocaleString("en-GB")}</span>
     </div>
   </div>
-
+  <!-- -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="card">
@@ -47,28 +66,25 @@ const govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D
     </div>
     <div class="govuk-grid-column-one-third">
       <div class="card height-526">
-        <h2>Quotas to visualise:</h2>
-
-```js
-const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Object.keys(stringToCodeMap)[5]]}))
-```
-
-<h2>Display quota renewal dates?</h2>
-
-```js
-const displayLines = view(Inputs.checkbox(['Show dates'],{value:['Show dates']}))
-```
-
-</div>
-</div>
-</div>
-<h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
-  <div class="grid grid-cols-1">
-    <div class="card">
-      ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
+        <h2 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-2">Quotas to visualise:</h2>
+        ${quotaInputs}
+        <!-- -->
+        <h2 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-2">Display quota renewal dates?</h2>
+        ${displayLinesInput}
+      </div>
+    </div>
+  <!-- -->
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
+      <div class="grid grid-cols-1">
+        <div class="card">
+          ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
+        </div>
+      </div>
     </div>
   </div>
-
 <!-- Closes .govuk-width-container -->
 </div>
 
@@ -87,15 +103,14 @@ for (let balanceSet in balanceHistory){
     }))
 }
 
-let plots = selection.map((string, index) => {
+let plots = quotaSelection.map((string, index) => {
   let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
   return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
-  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLines[0]=='Show dates') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]} 
+  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLinesSelection[0]=='Show dates') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]} 
 ) 
 
 const marks =  [Plot.gridY(),Plot.ruleY([0], {stroke: "currentColor"}),
       Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),]
-
 
 const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv")
   .csv({typed: true})
@@ -124,16 +139,7 @@ function balanceHistoryChart(data, {width}) {
     ]
   })
 }
-```
 
-</div>
-      </div>
-      </div>
-    </div>
-</div>
-<div class="govuk-width-container">
-
-```js
 function remainingChart(data, {width}) {
   return Plot.plot({
     title: "Areas with highest percentage of unused quotas",
