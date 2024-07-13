@@ -61,8 +61,26 @@
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.e76c1d9e.json","lastModified":1720871455866});
-registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.ecf27b0b.csv","lastModified":1720871460382});
+registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.66005487.json","lastModified":1720874853071});
+registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.ecf27b0b.csv","lastModified":1720874854371});
+
+define({id: "8d2d75c8", inputs: ["Inputs","Generators"], outputs: ["stringToCodeMap","govuk_colour_palette","quotaInputs","quotaSelection","displayLinesInput","displayLinesSelection"], body: (Inputs,Generators) => {
+const stringToCodeMap = {
+  "050096 Food preparation (US)":"050096",
+  "050097 Wine (ERGA OMNES)":"050097",
+  "050120 Sausages (ERGA OMNES)":"050120",
+  "050212 Fruits/Nuts (Turkey)":"050212",
+  "050035 Dried vegetables (ERGA OMNES)": "050035",
+  "050232 Pasta (Turkey)": "050232",
+};
+const govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"];
+const quotaInputs = Inputs.checkbox(Object.keys(stringToCodeMap), {value: [Object.keys(stringToCodeMap)[5]]});
+const quotaSelection = Generators.input(quotaInputs);
+
+const displayLinesInput = Inputs.checkbox(['Show dates'], {value:['Show dates']});
+const displayLinesSelection = Generators.input(displayLinesInput);
+return {stringToCodeMap,govuk_colour_palette,quotaInputs,quotaSelection,displayLinesInput,displayLinesSelection};
+}});
 
 define({id: "d429b762", inline: true, inputs: ["currentVolumes","display"], body: async (currentVolumes,display) => {
 display(await(
@@ -94,23 +112,16 @@ resize((width) => balanceHistoryChart(balanceHistory, {width}))
 ))
 }});
 
-define({id: "f0ad74ca", inputs: ["view","Inputs"], outputs: ["stringToCodeMap","selection"], body: (view,Inputs) => {
-const stringToCodeMap = {
-  "050096 Food preparation (US)":"050096",
-  "050097 Wine (ERGA OMNES)":"050097",
-  "050120 Sausages (ERGA OMNES)":"050120",
-  "050212 Fruits/Nuts (Turkey)":"050212",
-  "050035 Dried vegetables (ERGA OMNES)": "050035",
-  "050232 Pasta (Turkey)": "050232",
-}
-
-const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Object.keys(stringToCodeMap)[5]]}))
-return {stringToCodeMap,selection};
+define({id: "58123d1e", inline: true, inputs: ["quotaInputs","display"], body: async (quotaInputs,display) => {
+display(await(
+quotaInputs
+))
 }});
 
-define({id: "a85b1f2a", inputs: ["view","Inputs"], outputs: ["displayLines"], body: (view,Inputs) => {
-const displayLines = view(Inputs.checkbox(['Show dates'],{value:['Show dates']}))
-return {displayLines};
+define({id: "d027598c", inline: true, inputs: ["displayLinesInput","display"], body: async (displayLinesInput,display) => {
+display(await(
+displayLinesInput
+))
 }});
 
 define({id: "19be8d87", inline: true, inputs: ["resize","remainingChart","currentOpenCriticalVolumes","display"], body: async (resize,remainingChart,currentOpenCriticalVolumes,display) => {
@@ -119,13 +130,7 @@ resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))
 ))
 }});
 
-define({id: "8fcb3d23", outputs: ["govuk_colour_palette"], body: () => {
-let govuk_colour_palette = ["#12436D", "#28A197", "#801650", "#F46A25", "#3D3D3D", "#A285D1"]
-
-return {govuk_colour_palette};
-}});
-
-define({id: "da24182a", inputs: ["FileAttachment","selection","Plot","displayLines","govuk_colour_palette"], outputs: ["balanceHistory","tableData","plots","marks","currentVolumes","currentOpenCriticalVolumes","balanceHistoryChart"], body: async (FileAttachment,selection,Plot,displayLines,govuk_colour_palette) => {
+define({id: "179d477b", inputs: ["FileAttachment","quotaSelection","Plot","displayLinesSelection","govuk_colour_palette"], outputs: ["balanceHistory","tableData","plots","marks","currentVolumes","currentOpenCriticalVolumes","balanceHistoryChart","remainingChart"], body: async (FileAttachment,quotaSelection,Plot,displayLinesSelection,govuk_colour_palette) => {
 const balanceHistory = await FileAttachment("./data/quota-balance-history.json").json({typed: true})
 let tableData = []
 for (let balanceSet in balanceHistory){
@@ -140,15 +145,14 @@ for (let balanceSet in balanceHistory){
     }))
 }
 
-let plots = selection.map((string, index) => {
+let plots = quotaSelection.map((string, index) => {
   let chosenIndex = tableData.findIndex((item) => item[0].readable_desc==string)
   return [Plot.dot(tableData[chosenIndex], {x: "date", y: "percentage_remaining",stroke: "readable_desc", symbol:'asterisk'}),
-  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLines[0]=='Show dates') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]} 
+  tableData[chosenIndex].map((item,index) => {if (index % 10 == 0 && displayLinesSelection[0]=='Show dates') return [ Plot.ruleX({length: 500}, {x:item['quota_start_date'], strokeOpacity: 0.2})]}),]} 
 ) 
 
 const marks =  [Plot.gridY(),Plot.ruleY([0], {stroke: "currentColor"}),
       Plot.ruleX(['2022-01-01'], {stroke: "currentColor"}),]
-
 
 const currentVolumes = FileAttachment("./data/quotas-including-current-volumes.csv")
   .csv({typed: true})
@@ -178,11 +182,6 @@ function balanceHistoryChart(data, {width}) {
   })
 }
 
-
-return {balanceHistory,tableData,plots,marks,currentVolumes,currentOpenCriticalVolumes,balanceHistoryChart};
-}});
-
-define({id: "3b43ef80", inputs: ["Plot","govuk_colour_palette"], outputs: ["remainingChart"], body: (Plot,govuk_colour_palette) => {
 function remainingChart(data, {width}) {
   return Plot.plot({
     title: "Areas with highest percentage of unused quotas",
@@ -205,7 +204,7 @@ function remainingChart(data, {width}) {
     ]
   });
 }
-return {remainingChart};
+return {balanceHistory,tableData,plots,marks,currentVolumes,currentOpenCriticalVolumes,balanceHistoryChart,remainingChart};
 }});
 
 </script>
@@ -234,6 +233,7 @@ return {remainingChart};
 </div></div>
 </header>
 <main id="observablehq-main" class="observablehq">
+<div id="cell-8d2d75c8" class="observablehq observablehq--block"></div>
 <div class="govuk-width-container">
   <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
   <div class="grid grid-cols-4">
@@ -254,6 +254,7 @@ return {remainingChart};
       <span class="big"><span id="cell-68762888"><span class="observablehq-loading"></span></span></span>
     </div>
   </div>
+  <!-- -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <div class="card">
@@ -262,35 +263,33 @@ return {remainingChart};
     </div>
     <div class="govuk-grid-column-one-third">
       <div class="card height-526">
-        <h2>Quotas to visualise:</h2>
-<div id="cell-f0ad74ca" class="observablehq observablehq--block"></div>
-<h2>Display quota renewal dates?</h2>
-<div id="cell-a85b1f2a" class="observablehq observablehq--block"></div>
-</div>
-</div>
-</div>
-<h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
-  <div class="grid grid-cols-1">
-    <div class="card">
-      <span id="cell-19be8d87"><span class="observablehq-loading"></span></span>
+        <h2 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-2">Quotas to visualise:</h2>
+        <span id="cell-58123d1e"><span class="observablehq-loading"></span></span>
+        <!-- -->
+        <h2 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-2">Display quota renewal dates?</h2>
+        <span id="cell-d027598c"><span class="observablehq-loading"></span></span>
+      </div>
+    </div>
+  <!-- -->
+  </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
+      <div class="grid grid-cols-1">
+        <div class="card">
+          <span id="cell-19be8d87"><span class="observablehq-loading"></span></span>
+        </div>
+      </div>
     </div>
   </div>
 <!-- Closes .govuk-width-container -->
 </div>
-<div id="cell-8fcb3d23" class="observablehq observablehq--block"></div>
-<div id="cell-da24182a" class="observablehq observablehq--block"></div>
-
-      
-      
-    
-
-<div class="govuk-width-container">
-<div id="cell-3b43ef80" class="observablehq observablehq--block"></div>
-</div></main>
+<div id="cell-179d477b" class="observablehq observablehq--block"></div>
+</main>
 <footer id="observablehq-footer">
 <div>
 <div class="govuk-width-container">
-  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_self" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Saturday 13 July 2024 at 12:47:26 BST</p>
+  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_self" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Saturday 13 July 2024 at 13:43:32 BST</p>
 </div>
 <div class="govuk-footer">
   <div class="govuk-width-container">
