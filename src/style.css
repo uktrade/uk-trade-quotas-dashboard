@@ -23,31 +23,57 @@
 #observablehq-main, #observablehq-header, #observablehq-footer {
   max-width: none;
 }
-
-.height-526{
-  height:526px;
+@media (min-width: 40.0625em) {
+  .govuk-width-container {
+    margin-right: 30px;
+    margin-left: 30px;
+  }
+  @supports (margin: max(calc(0px))) {
+    .govuk-width-container {
+      margin-right: max(30px,calc(15px + env(safe-area-inset-right)));
+      margin-left: max(30px,calc(15px + env(safe-area-inset-left)));
+    }
+  }
 }
+@media (min-width: 1160px) {
+  .govuk-width-container {
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @supports (margin: max(calc(0px))) {
+    .govuk-width-container {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+}
+
 /* Remove margins/widths set by Observable (in its place we use GOV.UK markup/CSVV */
 #observablehq-header,
 #observablehq-center,
 #observablehq-footer {
   max-width: none;
-  margin:0px !important;
-}
-
-input[type="checkbox"] {
-  z-index: 1;
-    width: 44px;
-    min-width:44px;
-    min-height: 44px;
-    height: 44px;
-    margin: 0;
-    background-color: white;
-    cursor: pointer;
-
+  margin: 0px;
 }
 p, table, figure, figcaption, h1, h2, h3, h4, h5, h6, .katex-display {
   max-width: none;
+}
+
+/* Beefier checkboxes - a little bit more like GOV.UK */
+input[type="checkbox"] {
+  z-index: 1;
+  width: 44px;
+  min-width:44px;
+  min-height: 44px;
+  height: 44px;
+  margin: 0;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Force boxes in the grid to have the same height */
+.height-526 {
+  height: 526px;
 }
 
 /* Restore link styles */
