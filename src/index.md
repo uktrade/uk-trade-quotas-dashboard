@@ -72,7 +72,6 @@ const displayLinesSelection = Generators.input(displayLinesInput);
 <!-- Charts -->
 ```js
 function balanceHistoryChart(data, {width}) {
-  console.log(quotaSelection);
   return Plot.plot({
     title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2020 for six quotas. Data is available only at inconsistent intervals.",
