@@ -50,9 +50,8 @@ const stringToCodeMap = {
 
 const selection = view(Inputs.checkbox(Object.keys(stringToCodeMap),{value: [Object.keys(stringToCodeMap)[5]]}))
 ```
-<h2>
-        Display quota renewal dates?
-      </h2>
+
+<h2>Display quota renewal dates?</h2>
 
 ```js
 
