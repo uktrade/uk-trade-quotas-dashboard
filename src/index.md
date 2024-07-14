@@ -5,6 +5,7 @@
 #    https://observablehq.com/framework/markdown
 #    https://observablehq.com/framework/javascript
 #    https://observablehq.com/framework/reactivity
+#    https://observablehq.com/@observablehq/htl
 #    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 #
 # 2. We use quite a lot of HTML to leverage the GOV.UK Design System, more than most Observable
@@ -62,10 +63,42 @@ const currentOpenCriticalVolumes = currentVolumes
 
 <!-- Input widgets -->
 ```js
-const quotaInputs = Inputs.checkbox(Object.keys(stringToCodeMap), {value: [Object.keys(stringToCodeMap)[5]]});
+function govUKCheckboxes(idPrefix, title, values, selected) {
+  const myView = htl.html`
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-!-margin-bottom-0">
+          <h2 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2"><span class="govuk-heading-s govuk-!-margin-bottom-0">
+            ${title}
+          </span></h2>
+        </legend>
+        <div class="govuk-checkboxes" d=ata-module="govuk-checkboxes">
+          ${values.map((value, index) =>
+            htl.html`<div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="${idPrefix}-${index}" name="${idPrefix}--${index}" type="checkbox" value="${value}" checked=${selected.includes(value)}>
+              <label class="govuk-label govuk-checkboxes__label" for="${idPrefix}-${index}">
+                ${value.replace(/(.+)\((.+)\)/, '$1')}
+                ${/(.+)\((.+)\)/.test(value) ? htl.html`<br>${value.replace(/(.+)\((.+)\)/, '$2')}` : ``}
+              </label>
+            </div>`
+          )}
+        </div>
+      </fieldset>
+    </div>`;
+  myView.addEventListener('input', () => {
+    myView.value = Array.from(myView.getElementsByTagName('input'))
+      .filter((input) => input.checked)
+      .map((input) => input.value)
+  });
+  myView.value = selected;
+
+  return myView;
+}
+
+const quotaInputs = govUKCheckboxes('quotas', 'Quotas to visualise', Object.keys(stringToCodeMap), [Object.keys(stringToCodeMap)[5]]);
 const quotaSelection = Generators.input(quotaInputs);
 
-const displayLinesInput = Inputs.checkbox(['Show dates'], {value: ['Show dates']});
+const displayLinesInput = govUKCheckboxes('show-dates', 'Display quota renewal dates?', ['Show dates'], ['Show dates']);
 const displayLinesSelection = Generators.input(displayLinesInput);
 ```
 
@@ -73,7 +106,6 @@ const displayLinesSelection = Generators.input(displayLinesInput);
 ```js
 function balanceHistoryChart(data, {width}) {
   return Plot.plot({
-    title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2022 for up to six quotas. Data is available only at inconsistent intervals.",
     width,
     style: "font-size: 12px;",
@@ -101,7 +133,6 @@ function balanceHistoryChart(data, {width}) {
 
 function remainingChart(data, {width}) {
   return Plot.plot({
-    title: "Areas with highest percentage of unused quotas",
     subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas.",
     width,
     height: 550,
@@ -147,16 +178,14 @@ function remainingChart(data, {width}) {
   <!-- -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <div class="card">
+      <div class="card" style="min-height: 608px">
+        <h2><span class="govuk-heading-s">Percentage of quota remaining over time</span></h2>
         ${resize((width) => balanceHistoryChart(balanceHistory, {width}))}
       </div>
     </div>
     <div class="govuk-grid-column-one-third">
-      <div class="card height-526">
-        <h2 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-2">Quotas to visualise:</h2>
+      <div class="card" style="min-height: 608px">
         ${quotaInputs}
-        <!-- -->
-        <h2 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-2">Display quota renewal dates?</h2>
         ${displayLinesInput}
       </div>
     </div>
@@ -167,6 +196,7 @@ function remainingChart(data, {width}) {
       <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
       <div class="grid grid-cols-1">
         <div class="card">
+          <h2><span class="govuk-heading-s">Areas with highest percentage of unused quotas</span></h2>
           ${resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))}
         </div>
       </div>
