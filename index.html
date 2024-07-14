@@ -5,19 +5,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="preload" as="style" href="./_observablehq/theme-air.css">
-<link rel="preload" as="style" href="./_observablehq/stdlib/inputs.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_observablehq/theme-air.css">
-<link rel="stylesheet" type="text/css" href="./_observablehq/stdlib/inputs.css">
 <link rel="modulepreload" href="./_observablehq/client.js">
 <link rel="modulepreload" href="./_observablehq/runtime.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.js">
 <link rel="modulepreload" href="./_npm/d3-dsv@3.0.1/_esm.js">
-<link rel="modulepreload" href="./_observablehq/stdlib/inputs.js">
-<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.15/_esm.js">
 <link rel="modulepreload" href="./_npm/htl@0.3.1/_esm.js">
-<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
+<link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.15/_esm.js">
 <link rel="modulepreload" href="./_npm/d3@7.9.0/_esm.js">
+<link rel="modulepreload" href="./_npm/isoformat@0.2.1/_esm.js">
 <link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/_esm.js">
 <link rel="modulepreload" href="./_npm/d3-array@3.2.4/_esm.js">
 <link rel="modulepreload" href="./_npm/d3-axis@3.0.0/_esm.js">
@@ -54,15 +51,15 @@
 <link rel="modulepreload" href="./_npm/robust-predicates@3.0.2/_esm.js">
 
     <link rel="stylesheet" href="./_npm/govuk-frontend@5.4.0/dist/govuk/govuk-frontend.min.css">
-    <link rel="stylesheet" href="./_file/style.050c992d.css">
+    <link rel="stylesheet" href="./_file/style.0b820329.css">
   
 <script type="module">
 
 import {define} from "./_observablehq/client.js";
 import {registerFile} from "./_observablehq/stdlib.js";
 
-registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.c404dad9.json","lastModified":1720956029529});
-registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.1e0a11ed.csv","lastModified":1720956030797});
+registerFile("./data/quota-balance-history.json", {"name":"./data/quota-balance-history.json","mimeType":"application/json","path":"./_file/data/quota-balance-history.eb71230d.json","lastModified":1720972490268});
+registerFile("./data/quotas-including-current-volumes.csv", {"name":"./data/quotas-including-current-volumes.csv","mimeType":"text/csv","path":"./_file/data/quotas-including-current-volumes.1e0a11ed.csv","lastModified":1720972491208});
 
 define({id: "d97fcaaa", outputs: ["stringToCodeMap","govuk_colour_palette"], body: () => {
 const stringToCodeMap = {
@@ -104,19 +101,50 @@ const currentOpenCriticalVolumes = currentVolumes
 return {balanceHistory,separator,startDates,currentVolumes,currentOpenCriticalVolumes};
 }});
 
-define({id: "cca33630", inputs: ["Inputs","stringToCodeMap","Generators"], outputs: ["quotaInputs","quotaSelection","displayLinesInput","displayLinesSelection"], body: (Inputs,stringToCodeMap,Generators) => {
-const quotaInputs = Inputs.checkbox(Object.keys(stringToCodeMap), {value: [Object.keys(stringToCodeMap)[5]]});
+define({id: "b8cd5c87", inputs: ["htl","stringToCodeMap","Generators"], outputs: ["govUKCheckboxes","quotaInputs","quotaSelection","displayLinesInput","displayLinesSelection"], body: (htl,stringToCodeMap,Generators) => {
+function govUKCheckboxes(idPrefix, title, values, selected) {
+  const myView = htl.html`
+    <div class="govuk-form-group">
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-!-margin-bottom-0">
+          <h2 class="govuk-!-margin-top-0 govuk-!-margin-bottom-2"><span class="govuk-heading-s govuk-!-margin-bottom-0">
+            ${title}
+          </span></h2>
+        </legend>
+        <div class="govuk-checkboxes" d=ata-module="govuk-checkboxes">
+          ${values.map((value, index) =>
+            htl.html`<div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="${idPrefix}-${index}" name="${idPrefix}--${index}" type="checkbox" value="${value}" checked=${selected.includes(value)}>
+              <label class="govuk-label govuk-checkboxes__label" for="${idPrefix}-${index}">
+                ${value.replace(/(.+)\((.+)\)/, '$1')}
+                ${/(.+)\((.+)\)/.test(value) ? htl.html`<br>${value.replace(/(.+)\((.+)\)/, '$2')}` : ``}
+              </label>
+            </div>`
+          )}
+        </div>
+      </fieldset>
+    </div>`;
+  myView.addEventListener('input', () => {
+    myView.value = Array.from(myView.getElementsByTagName('input'))
+      .filter((input) => input.checked)
+      .map((input) => input.value)
+  });
+  myView.value = selected;
+
+  return myView;
+}
+
+const quotaInputs = govUKCheckboxes('quotas', 'Quotas to visualise', Object.keys(stringToCodeMap), [Object.keys(stringToCodeMap)[5]]);
 const quotaSelection = Generators.input(quotaInputs);
 
-const displayLinesInput = Inputs.checkbox(['Show dates'], {value: ['Show dates']});
+const displayLinesInput = govUKCheckboxes('show-dates', 'Display quota renewal dates?', ['Show dates'], ['Show dates']);
 const displayLinesSelection = Generators.input(displayLinesInput);
-return {quotaInputs,quotaSelection,displayLinesInput,displayLinesSelection};
+return {govUKCheckboxes,quotaInputs,quotaSelection,displayLinesInput,displayLinesSelection};
 }});
 
-define({id: "966f87b2", inputs: ["Plot","quotaSelection","govuk_colour_palette","balanceHistory","startDates","displayLinesSelection"], outputs: ["balanceHistoryChart","remainingChart"], body: (Plot,quotaSelection,govuk_colour_palette,balanceHistory,startDates,displayLinesSelection) => {
+define({id: "30d0e931", inputs: ["Plot","quotaSelection","govuk_colour_palette","balanceHistory","startDates","displayLinesSelection"], outputs: ["balanceHistoryChart","remainingChart"], body: (Plot,quotaSelection,govuk_colour_palette,balanceHistory,startDates,displayLinesSelection) => {
 function balanceHistoryChart(data, {width}) {
   return Plot.plot({
-    title: "Percentage of quota remaining over time",
     subtitle: "How the percentage remaining has changed since the start of 2022 for up to six quotas. Data is available only at inconsistent intervals.",
     width,
     style: "font-size: 12px;",
@@ -144,7 +172,6 @@ function balanceHistoryChart(data, {width}) {
 
 function remainingChart(data, {width}) {
   return Plot.plot({
-    title: "Areas with highest percentage of unused quotas",
     subtitle: "The 20 geographical areas that have the highest percentage remaining balance of open and critical quotas.",
     width,
     height: 550,
@@ -246,9 +273,9 @@ resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))
 <!-- Data -->
 <div id="cell-9774e53f" class="observablehq observablehq--block"></div>
 <!-- Input widgets -->
-<div id="cell-cca33630" class="observablehq observablehq--block"></div>
+<div id="cell-b8cd5c87" class="observablehq observablehq--block"></div>
 <!-- Charts -->
-<div id="cell-966f87b2" class="observablehq observablehq--block"></div>
+<div id="cell-30d0e931" class="observablehq observablehq--block"></div>
 <!-- HTML combining all the above -->
 <div class="govuk-width-container">
   <h1 class="govuk-heading-l govuk-!-margin-top-7">Quota balances</h1>
@@ -273,16 +300,14 @@ resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))
   <!-- -->
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <div class="card">
+      <div class="card" style="min-height: 608px">
+        <h2><span class="govuk-heading-s">Percentage of quota remaining over time</span></h2>
         <span id="cell-854d32af"><span class="observablehq-loading"></span></span>
       </div>
     </div>
     <div class="govuk-grid-column-one-third">
-      <div class="card height-526">
-        <h2 class="govuk-heading-l govuk-!-margin-top-0 govuk-!-margin-bottom-2">Quotas to visualise:</h2>
+      <div class="card" style="min-height: 608px">
         <span id="cell-58123d1e"><span class="observablehq-loading"></span></span>
-        <!-- -->
-        <h2 class="govuk-heading-l govuk-!-margin-top-3 govuk-!-margin-bottom-2">Display quota renewal dates?</h2>
         <span id="cell-d027598c"><span class="observablehq-loading"></span></span>
       </div>
     </div>
@@ -293,6 +318,7 @@ resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))
       <h1 class="govuk-heading-l govuk-!-margin-top-7">Unused Quotas</h1>
       <div class="grid grid-cols-1">
         <div class="card">
+          <h2><span class="govuk-heading-s">Areas with highest percentage of unused quotas</span></h2>
           <span id="cell-19be8d87"><span class="observablehq-loading"></span></span>
         </div>
       </div>
@@ -304,7 +330,7 @@ resize((width) => remainingChart(currentOpenCriticalVolumes, {width}))
 <footer id="observablehq-footer">
 <div>
 <div class="govuk-width-container">
-  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_self" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Sunday 14 July 2024 at 12:17:41 BST</p>
+  <p class="govuk-body-s govuk-!-margin-bottom-7">Data source: <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas" target="_self" rel="noopener noreferrer">"UK trade quotas" published on data.gov.uk</a> as of Sunday 14 July 2024 at 16:52:19 BST</p>
 </div>
 <div class="govuk-footer">
   <div class="govuk-width-container">
