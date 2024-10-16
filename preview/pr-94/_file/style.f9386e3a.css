@@ -22,6 +22,10 @@
 }
 #observablehq-main, #observablehq-header, #observablehq-footer {
   max-width: none;
+  display: block;
+  padding: 0;
+  margin: 0;
+  position: static;
 }
 @media (min-width: 40.0625em) {
   .govuk-width-container {
