@@ -20,7 +20,7 @@ jobs:
       - name: Make sure to not run Jekyll
         run: touch dist/.nojekyll
       - name: Set CNAME
-        run: echo "uk-trade-quotas.docs.trade.gov.uk" >> dist/CNAME
+        run: echo "trade-and-investment-factsheets.docs.trade.gov.uk" >> dist/CNAME
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:

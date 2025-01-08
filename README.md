@@ -1,8 +1,6 @@
-# UK trade quotas dashboard
+# Trade and Investment Factsheets Prototype
 
-This repository contains the source code for the <a href="https://uk-trade-quotas.docs.trade.gov.uk/">UK trade quotas dashboard</a>.
-
-The dashboard sources data from the <a class="govuk-link govuk-link--no-visited-state" href="https://www.data.gov.uk/dataset/4a478c7e-16c7-4c28-ab9b-967bb79342e9/uk-trade-quotas">"UK trade quotas" dataset published on data.gov.uk</a>, which in turn sources data from the <a href="https://data.api.trade.gov.uk/">Department for Business and Trade Data API</a>.
+This repository contains the source code for the <a href="https://trade-and-investment-factsheets.docs.trade.gov.uk/">Trade and Investment Factsheets Prototype</a>.
 
 > [!IMPORTANT]  
 > This is prototype for testing purposes only. It exists to experiment with using the [Observable Framework](https://observablehq.com/framework) to publish dashboards of public data.
@@ -24,13 +22,13 @@ The dashboard sources data from the <a class="govuk-link govuk-link--no-visited-
 This is an [Observable Framework](https://observablehq.com/framework) project. To start the local preview server you first need to clone the code:
 
 ```bash
-git clone git@github.com:uktrade/uk-trade-quotas-dashboard.git
+git clone git@github.com:uktrade/trade-and-investment-factsheets.git
 ```
 
-go into the `uk-trade-quotas-dashboard` folder:
+go into the `trade-and-investment-factsheets` folder:
 
 ```bash
-cd uk-trade-quotas-dashboard
+cd trade-and-investment-factsheets
 ```
 
 And then run:
@@ -46,7 +44,7 @@ For more information, see <https://observablehq.com/framework/getting-started>.
 
 ## Making and previewing changes in the browser
 
-It's possible to make changes to this dashboard directly in the [github.dev web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor), and to preview changes before changing the [production dashboard](https://uk-trade-quotas.docs.trade.gov.uk/). 
+It's possible to make changes to this dashboard directly in the [github.dev web-based editor](https://docs.github.com/en/codespaces/the-githubdev-web-based-editor), and to preview changes before changing the [production dashboard](https://trade-and-investment-factsheets.docs.trade.gov.uk/). 
 
 While the feedback cycle of this process is slow, this process is suitable if you are not able to run this dashboard locally.
 
@@ -63,7 +61,7 @@ The steps to make changes are in the [Using source control section of the github
 
 4. Commit and push. The commit message can be brief, but should be accurate.
 
-5. Make a pull request from your branch. It should appear at https://github.com/uktrade/uk-trade-quotas-dashboard/pulls.
+5. Make a pull request from your branch. It should appear at https://github.com/uktrade/trade-and-investment-factsheets/pulls.
 
 To then preview changes:
 
@@ -71,7 +69,7 @@ To then preview changes:
 
    Note that the comment appears a few moments _before_ the preview is ready. If you click the link very soon after it appears, you may arrive at a 404 error page. If this happens wait a few moments and refresh.
 
-   If there is an error when building the preview, the comment will not appear. Errors should be visible in the [log of workflows for the "GitHub pages: deploy preview" action](https://github.com/uktrade/uk-trade-quotas-dashboard/actions/workflows/github-pages-deploy-preview.yml).
+   If there is an error when building the preview, the comment will not appear. Errors should be visible in the [log of workflows for the "GitHub pages: deploy preview" action](https://github.com/uktrade/trade-and-investment-factsheets/actions/workflows/github-pages-deploy-preview.yml).
 
 If you need to make changes, you should be able to repeat steps 3 and 4 above for your branch, and then wait again for the preview to be updated so you can see the effects of your changes.
 

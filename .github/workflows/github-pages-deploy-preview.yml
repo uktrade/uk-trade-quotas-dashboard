@@ -25,4 +25,4 @@ jobs:
         with:
           umbrella-dir: preview
           source-dir: dist
-          custom-url: uk-trade-quotas.docs.trade.gov.uk
+          custom-url: trade-and-investment-factsheets.docs.trade.gov.uk
