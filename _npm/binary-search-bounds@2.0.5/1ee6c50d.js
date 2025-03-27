@@ -1,5 +1,5 @@
 /**
- * Bundled by jsDelivr using Rollup v2.79.2 and Terser v5.37.0.
+ * Bundled by jsDelivr using Rollup v2.79.1 and Terser v5.19.2.
  * Original file: /npm/binary-search-bounds@2.0.5/search-bounds.js
  *
  * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
